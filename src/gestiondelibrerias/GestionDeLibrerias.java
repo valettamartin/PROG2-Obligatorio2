@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package gestiondelibrerias;
+import interfaz.Inicio;
 
 /*
 Martín Valetta - 251093
@@ -16,7 +17,11 @@ public class GestionDeLibrerias {
     */
     
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        // Test de funcionamiento de ventanas
+        Inicio inicio = new Inicio();
+        inicio.setVisible(true);
+                
     }
     
 }
