@@ -52,10 +52,10 @@
                                   </Group>
                                   <Component id="scrLibros" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="btnAgregar" min="-2" pref="59" max="-2" attributes="0"/>
-                                  <Component id="btnEliminar" pref="0" max="32767" attributes="0"/>
+                                  <Component id="btnEliminar" pref="65" max="32767" attributes="0"/>
+                                  <Component id="btnAgregar" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -63,8 +63,8 @@
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrVenta" pref="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="lblCliente" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="txtCliente" min="-2" pref="194" max="-2" attributes="0"/>
@@ -80,6 +80,7 @@
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
+                  <Component id="scrVenta" alignment="1" pref="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
