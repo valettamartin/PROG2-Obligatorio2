@@ -26,66 +26,105 @@ public class RegistrarGenero extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblNombreGenero = new javax.swing.JLabel();
-        lblDescripcion = new javax.swing.JLabel();
-        txtDescripcion = new javax.swing.JTextField();
-        txtNombreGenero = new javax.swing.JTextField();
-        btnAñadir = new javax.swing.JButton();
-        sepRegistro = new javax.swing.JSeparator();
-        scrDatosIngresados = new javax.swing.JScrollPane();
-        lstDatosIngresados = new javax.swing.JList<>();
+        pnlRegistro = new javax.swing.JPanel();
+        pnlRegistroNombre = new javax.swing.JPanel();
+        lblRegistroNombre = new javax.swing.JLabel();
+        txtRegistroNombre = new javax.swing.JTextField();
+        pnlRegistroDescripcion = new javax.swing.JPanel();
+        lblRegistroDescripcion = new javax.swing.JLabel();
+        txtRegistroDescripcion = new javax.swing.JTextField();
+        pnlRegistroCompletar = new javax.swing.JPanel();
+        btnAgregar = new javax.swing.JButton();
+        pnlDatos = new javax.swing.JPanel();
+        scrDatos = new javax.swing.JScrollPane();
+        lstDatos = new javax.swing.JList<>();
+        pnlSeparador = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Genero");
-        getContentPane().setLayout(null);
 
-        lblNombreGenero.setText("Nombre del genero:");
-        getContentPane().add(lblNombreGenero);
-        lblNombreGenero.setBounds(30, 20, 130, 16);
+        pnlRegistro.setMaximumSize(new java.awt.Dimension(32767, 150));
+        pnlRegistro.setMinimumSize(new java.awt.Dimension(10, 150));
+        pnlRegistro.setPreferredSize(new java.awt.Dimension(100, 150));
+        pnlRegistro.setLayout(new java.awt.BorderLayout());
 
-        lblDescripcion.setText("Descripcion:");
-        getContentPane().add(lblDescripcion);
-        lblDescripcion.setBounds(30, 50, 130, 16);
+        pnlRegistroNombre.setMaximumSize(new java.awt.Dimension(32767, 60));
+        pnlRegistroNombre.setMinimumSize(new java.awt.Dimension(10, 60));
+        pnlRegistroNombre.setPreferredSize(new java.awt.Dimension(100, 60));
 
-        txtDescripcion.setToolTipText("Descripción");
-        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
+        lblRegistroNombre.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRegistroNombre.setText("Nombre del genero:");
+        lblRegistroNombre.setMaximumSize(new java.awt.Dimension(150, 50));
+        lblRegistroNombre.setMinimumSize(new java.awt.Dimension(150, 50));
+        lblRegistroNombre.setPreferredSize(new java.awt.Dimension(150, 50));
+        pnlRegistroNombre.add(lblRegistroNombre);
+
+        txtRegistroNombre.setMaximumSize(new java.awt.Dimension(100, 30));
+        txtRegistroNombre.setMinimumSize(new java.awt.Dimension(100, 30));
+        txtRegistroNombre.setPreferredSize(new java.awt.Dimension(100, 30));
+        txtRegistroNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionActionPerformed(evt);
+                txtRegistroNombreActionPerformed(evt);
             }
         });
-        getContentPane().add(txtDescripcion);
-        txtDescripcion.setBounds(190, 50, 180, 20);
+        pnlRegistroNombre.add(txtRegistroNombre);
 
-        txtNombreGenero.setToolTipText("Nombre");
-        getContentPane().add(txtNombreGenero);
-        txtNombreGenero.setBounds(240, 20, 130, 20);
+        pnlRegistro.add(pnlRegistroNombre, java.awt.BorderLayout.PAGE_START);
 
-        btnAñadir.setText("Añadir");
-        btnAñadir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnAñadir);
-        btnAñadir.setBounds(279, 80, 90, 20);
-        getContentPane().add(sepRegistro);
-        sepRegistro.setBounds(10, 110, 380, 10);
+        pnlRegistroDescripcion.setMaximumSize(new java.awt.Dimension(32767, 60));
+        pnlRegistroDescripcion.setMinimumSize(new java.awt.Dimension(10, 60));
+        pnlRegistroDescripcion.setName(""); // NOI18N
+        pnlRegistroDescripcion.setPreferredSize(new java.awt.Dimension(100, 60));
 
-        scrDatosIngresados.setViewportView(lstDatosIngresados);
+        lblRegistroDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRegistroDescripcion.setText("Descripción:");
+        lblRegistroDescripcion.setMaximumSize(new java.awt.Dimension(100, 50));
+        lblRegistroDescripcion.setMinimumSize(new java.awt.Dimension(100, 50));
+        lblRegistroDescripcion.setPreferredSize(new java.awt.Dimension(100, 50));
+        pnlRegistroDescripcion.add(lblRegistroDescripcion);
 
-        getContentPane().add(scrDatosIngresados);
-        scrDatosIngresados.setBounds(20, 130, 360, 470);
+        txtRegistroDescripcion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtRegistroDescripcion.setMaximumSize(new java.awt.Dimension(150, 30));
+        txtRegistroDescripcion.setMinimumSize(new java.awt.Dimension(150, 30));
+        txtRegistroDescripcion.setPreferredSize(new java.awt.Dimension(150, 30));
+        pnlRegistroDescripcion.add(txtRegistroDescripcion);
 
-        setBounds(0, 0, 416, 681);
+        pnlRegistro.add(pnlRegistroDescripcion, java.awt.BorderLayout.CENTER);
+
+        pnlRegistroCompletar.setMaximumSize(new java.awt.Dimension(32767, 30));
+        pnlRegistroCompletar.setMinimumSize(new java.awt.Dimension(10, 30));
+        pnlRegistroCompletar.setPreferredSize(new java.awt.Dimension(100, 30));
+
+        btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        btnAgregar.setText("Agregar");
+        btnAgregar.setMargin(new java.awt.Insets(0, 14, 0, 14));
+        pnlRegistroCompletar.add(btnAgregar);
+
+        pnlRegistro.add(pnlRegistroCompletar, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(pnlRegistro, java.awt.BorderLayout.PAGE_START);
+
+        pnlDatos.setLayout(new java.awt.BorderLayout());
+
+        scrDatos.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        scrDatos.setMaximumSize(new java.awt.Dimension(90, 32767));
+        scrDatos.setMinimumSize(new java.awt.Dimension(90, 22));
+        scrDatos.setPreferredSize(new java.awt.Dimension(90, 100));
+
+        lstDatos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        scrDatos.setViewportView(lstDatos);
+
+        pnlDatos.add(scrDatos, java.awt.BorderLayout.CENTER);
+        pnlDatos.add(pnlSeparador, java.awt.BorderLayout.PAGE_START);
+
+        getContentPane().add(pnlDatos, java.awt.BorderLayout.CENTER);
+
+        setBounds(0, 0, 336, 316);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
+    private void txtRegistroNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegistroNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionActionPerformed
-
-    private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAñadirActionPerformed
+    }//GEN-LAST:event_txtRegistroNombreActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,13 +163,18 @@ public class RegistrarGenero extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAñadir;
-    private javax.swing.JLabel lblDescripcion;
-    private javax.swing.JLabel lblNombreGenero;
-    private javax.swing.JList<String> lstDatosIngresados;
-    private javax.swing.JScrollPane scrDatosIngresados;
-    private javax.swing.JSeparator sepRegistro;
-    private javax.swing.JTextField txtDescripcion;
-    private javax.swing.JTextField txtNombreGenero;
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JLabel lblRegistroDescripcion;
+    private javax.swing.JLabel lblRegistroNombre;
+    private javax.swing.JList<String> lstDatos;
+    private javax.swing.JPanel pnlDatos;
+    private javax.swing.JPanel pnlRegistro;
+    private javax.swing.JPanel pnlRegistroCompletar;
+    private javax.swing.JPanel pnlRegistroDescripcion;
+    private javax.swing.JPanel pnlRegistroNombre;
+    private javax.swing.JPanel pnlSeparador;
+    private javax.swing.JScrollPane scrDatos;
+    private javax.swing.JTextField txtRegistroDescripcion;
+    private javax.swing.JTextField txtRegistroNombre;
     // End of variables declaration//GEN-END:variables
 }

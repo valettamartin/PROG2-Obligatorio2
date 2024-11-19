@@ -38,6 +38,7 @@ public class RegistrarEditorial extends javax.swing.JFrame {
         pnlDatos = new javax.swing.JPanel();
         scrDatos = new javax.swing.JScrollPane();
         tblDatos = new javax.swing.JTable();
+        pnlSeparador = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Editorial");
@@ -135,10 +136,11 @@ public class RegistrarEditorial extends javax.swing.JFrame {
         scrDatos.setViewportView(tblDatos);
 
         pnlDatos.add(scrDatos, java.awt.BorderLayout.CENTER);
+        pnlDatos.add(pnlSeparador, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(pnlDatos, java.awt.BorderLayout.CENTER);
 
-        setBounds(0, 0, 341, 677);
+        setBounds(0, 0, 341, 310);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -193,6 +195,7 @@ public class RegistrarEditorial extends javax.swing.JFrame {
     private javax.swing.JPanel pnlRegistroCompletar;
     private javax.swing.JPanel pnlRegistroNombre;
     private javax.swing.JPanel pnlRegistroPais;
+    private javax.swing.JPanel pnlSeparador;
     private javax.swing.JScrollPane scrDatos;
     private javax.swing.JTable tblDatos;
     private javax.swing.JTextField txtNombre;
