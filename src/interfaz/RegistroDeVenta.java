@@ -43,7 +43,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         btnRegistrar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Venta de Libros");
 
         lblLibros.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
