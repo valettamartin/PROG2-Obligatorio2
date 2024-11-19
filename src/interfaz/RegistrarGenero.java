@@ -33,7 +33,7 @@ public class RegistrarGenero extends javax.swing.JFrame {
         btnAñadir = new javax.swing.JButton();
         sepRegistro = new javax.swing.JSeparator();
         scrDatosIngresados = new javax.swing.JScrollPane();
-        txaDatosIngresados = new javax.swing.JTextArea();
+        lstDatosIngresados = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Genero");
@@ -71,10 +71,7 @@ public class RegistrarGenero extends javax.swing.JFrame {
         getContentPane().add(sepRegistro);
         sepRegistro.setBounds(10, 110, 380, 10);
 
-        txaDatosIngresados.setEditable(false);
-        txaDatosIngresados.setColumns(20);
-        txaDatosIngresados.setRows(5);
-        scrDatosIngresados.setViewportView(txaDatosIngresados);
+        scrDatosIngresados.setViewportView(lstDatosIngresados);
 
         getContentPane().add(scrDatosIngresados);
         scrDatosIngresados.setBounds(20, 130, 360, 470);
@@ -130,9 +127,9 @@ public class RegistrarGenero extends javax.swing.JFrame {
     private javax.swing.JButton btnAñadir;
     private javax.swing.JLabel lblDescripcion;
     private javax.swing.JLabel lblNombreGenero;
+    private javax.swing.JList<String> lstDatosIngresados;
     private javax.swing.JScrollPane scrDatosIngresados;
     private javax.swing.JSeparator sepRegistro;
-    private javax.swing.JTextArea txaDatosIngresados;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombreGenero;
     // End of variables declaration//GEN-END:variables
