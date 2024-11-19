@@ -26,7 +26,6 @@ public class RegistrarLibro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTituloVentana = new javax.swing.JLabel();
         lblEditorial = new javax.swing.JLabel();
         scrEditorial = new javax.swing.JScrollPane();
         lstEditorial = new javax.swing.JList<>();
@@ -52,9 +51,6 @@ public class RegistrarLibro extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Registrar Libro");
-
-        lblTituloVentana.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTituloVentana.setText("Registrar un libro nuevo:");
 
         lblEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEditorial.setText("Editorial:");
@@ -146,10 +142,9 @@ public class RegistrarLibro extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblEditorial)
                             .addComponent(lblGenero)
@@ -158,20 +153,17 @@ public class RegistrarLibro extends javax.swing.JFrame {
                             .addComponent(lblTitulo))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrGenero, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrGenero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
                             .addComponent(scrEditorial, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIsbn, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTitulo, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(scrAutor))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(pnlFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTituloVentana)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblCosto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtCosto, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
@@ -193,8 +185,6 @@ public class RegistrarLibro extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTituloVentana)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -232,7 +222,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
                     .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnAgregar)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
@@ -295,7 +285,6 @@ public class RegistrarLibro extends javax.swing.JFrame {
     private javax.swing.JLabel lblIsbn;
     private javax.swing.JLabel lblStock;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblTituloVentana;
     private javax.swing.JLabel lblVenta;
     private javax.swing.JList<String> lstAutor;
     private javax.swing.JList<String> lstEditorial;

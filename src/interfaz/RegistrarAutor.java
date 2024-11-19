@@ -26,7 +26,6 @@ public class RegistrarAutor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblTitulo = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         lblNacionalidad = new javax.swing.JLabel();
         lblGeneros = new javax.swing.JLabel();
@@ -41,10 +40,6 @@ public class RegistrarAutor extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Autor");
-
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTitulo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblTitulo.setText("Registrar un autor nuevo:");
 
         lblNombre.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblNombre.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -95,7 +90,6 @@ public class RegistrarAutor extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(scrDatosPrevios, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(sepRegistroDatos, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -117,8 +111,6 @@ public class RegistrarAutor extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNombre)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -135,7 +127,7 @@ public class RegistrarAutor extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(sepRegistroDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrDatosPrevios, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrDatosPrevios, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -194,7 +186,6 @@ public class RegistrarAutor extends javax.swing.JFrame {
     private javax.swing.JLabel lblGeneros;
     private javax.swing.JLabel lblNacionalidad;
     private javax.swing.JLabel lblNombre;
-    private javax.swing.JLabel lblTitulo;
     private javax.swing.JList<String> lstDatosPrevios;
     private javax.swing.JList<String> lstGeneros;
     private javax.swing.JScrollPane scrDatosPrevios;
