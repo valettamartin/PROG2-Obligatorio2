@@ -19,12 +19,6 @@ public class GestionDeLibrerias {
     
     public static void main(String[] args) {
         
-        // Test de funcionamiento de ventanas
-        Inicio inicio = new Inicio();
-        RegistrarEditorial registrarEditorial = new RegistrarEditorial();
-        inicio.setVisible(true);
-        registrarEditorial.setVisible(true);
-                
     }
     
 }
