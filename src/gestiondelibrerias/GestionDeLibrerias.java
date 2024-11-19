@@ -4,6 +4,7 @@
  */
 package gestiondelibrerias;
 import interfaz.Inicio;
+import interfaz.RegistrarEditorial;
 
 /*
 Martín Valetta - 251093
@@ -20,7 +21,9 @@ public class GestionDeLibrerias {
         
         // Test de funcionamiento de ventanas
         Inicio inicio = new Inicio();
+        RegistrarEditorial registrarEditorial = new RegistrarEditorial();
         inicio.setVisible(true);
+        registrarEditorial.setVisible(true);
                 
     }
     

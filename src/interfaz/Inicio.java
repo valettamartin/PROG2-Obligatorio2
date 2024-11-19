@@ -106,7 +106,7 @@ public class Inicio extends javax.swing.JFrame {
 
         setJMenuBar(mnbPrincipal);
 
-        setBounds(0, 0, 416, 308);
+        setBounds(0, 0, 416, 223);
     }// </editor-fold>//GEN-END:initComponents
 
     private void itmRegistrarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarEditorialActionPerformed
