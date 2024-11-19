@@ -32,20 +32,17 @@ public class DatosLibro extends javax.swing.JFrame {
         txtStock = new javax.swing.JTextField();
         lblGenero = new javax.swing.JLabel();
         lblIsbn = new javax.swing.JLabel();
-        scrGenero = new javax.swing.JScrollPane();
-        lstGenero = new javax.swing.JList<>();
         txtIsbn = new javax.swing.JTextField();
         lblAutor = new javax.swing.JLabel();
         txtTitulo = new javax.swing.JTextField();
         lblTitulo = new javax.swing.JLabel();
-        scrAutor = new javax.swing.JScrollPane();
-        lstAutor = new javax.swing.JList<>();
         lblCosto = new javax.swing.JLabel();
         lblEditorial = new javax.swing.JLabel();
         lblVenta = new javax.swing.JLabel();
         lblStock = new javax.swing.JLabel();
-        scrEditorial = new javax.swing.JScrollPane();
-        lstEditorial = new javax.swing.JList<>();
+        txtEditorial = new javax.swing.JTextField();
+        txtAutor = new javax.swing.JTextField();
+        txtGenero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Datos del libro");
@@ -61,11 +58,11 @@ public class DatosLibro extends javax.swing.JFrame {
         pnlFoto.setLayout(pnlFotoLayout);
         pnlFotoLayout.setHorizontalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
+            .addGap(0, 135, Short.MAX_VALUE)
         );
         pnlFotoLayout.setVerticalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         txtVenta.setEditable(false);
@@ -81,9 +78,6 @@ public class DatosLibro extends javax.swing.JFrame {
 
         lblIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblIsbn.setText("Isbn:");
-
-        lstGenero.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        scrGenero.setViewportView(lstGenero);
 
         txtIsbn.setEditable(false);
         txtIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -107,9 +101,6 @@ public class DatosLibro extends javax.swing.JFrame {
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTitulo.setText("Titulo:");
 
-        lstAutor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        scrAutor.setViewportView(lstAutor);
-
         lblCosto.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblCosto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblCosto.setText("Costo:");
@@ -125,52 +116,82 @@ public class DatosLibro extends javax.swing.JFrame {
         lblStock.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblStock.setText("Stock:");
 
-        lstEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lstEditorial.setToolTipText("");
-        scrEditorial.setViewportView(lstEditorial);
+        txtEditorial.setEditable(false);
+        txtEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEditorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEditorialActionPerformed(evt);
+            }
+        });
+
+        txtAutor.setEditable(false);
+        txtAutor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtAutorActionPerformed(evt);
+            }
+        });
+
+        txtGenero.setEditable(false);
+        txtGenero.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtGenero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtGeneroActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(lblGenero)
+                                .addGap(16, 16, 16))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lblAutor)
+                                .addGap(18, 18, 18)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtGenero)
+                            .addComponent(txtAutor)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblCosto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtCosto, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtVenta))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(lblVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblEditorial)
-                            .addComponent(lblGenero)
-                            .addComponent(lblAutor)
                             .addComponent(lblIsbn)
                             .addComponent(lblTitulo))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrGenero, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrEditorial, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtIsbn, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTitulo, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrAutor))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtCosto, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                            .addComponent(lblCosto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                            .addComponent(lblVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                            .addComponent(lblStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap())
+                            .addComponent(txtIsbn, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                            .addComponent(txtTitulo)
+                            .addComponent(txtEditorial))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtStock, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
+                    .addComponent(pnlFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,23 +201,23 @@ public class DatosLibro extends javax.swing.JFrame {
                             .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblIsbn))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblEditorial)
-                            .addComponent(scrEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrGenero, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblGenero))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblGenero)
+                            .addComponent(txtGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(scrAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtAutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAutor)))
-                    .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
+                    .addComponent(pnlFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCosto)
-                    .addComponent(lblVenta)
-                    .addComponent(lblStock))
+                    .addComponent(lblStock)
+                    .addComponent(lblVenta))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,6 +236,18 @@ public class DatosLibro extends javax.swing.JFrame {
     private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTituloActionPerformed
+
+    private void txtEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEditorialActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtEditorialActionPerformed
+
+    private void txtAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAutorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtAutorActionPerformed
+
+    private void txtGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGeneroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtGeneroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -260,14 +293,11 @@ public class DatosLibro extends javax.swing.JFrame {
     private javax.swing.JLabel lblStock;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblVenta;
-    private javax.swing.JList<String> lstAutor;
-    private javax.swing.JList<String> lstEditorial;
-    private javax.swing.JList<String> lstGenero;
     private javax.swing.JPanel pnlFoto;
-    private javax.swing.JScrollPane scrAutor;
-    private javax.swing.JScrollPane scrEditorial;
-    private javax.swing.JScrollPane scrGenero;
+    private javax.swing.JTextField txtAutor;
     private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtEditorial;
+    private javax.swing.JTextField txtGenero;
     private javax.swing.JTextField txtIsbn;
     private javax.swing.JTextField txtStock;
     private javax.swing.JTextField txtTitulo;
