@@ -11,6 +11,8 @@ Martín Valetta - 251093
 Santiago Oliveros - 339937
 */
 
+import interfaz.*;
+
 public class GestionDeLibrerias {
 
     /**
@@ -18,6 +20,9 @@ public class GestionDeLibrerias {
     */
     
     public static void main(String[] args) {
+       
+        Inicio menu = new Inicio();
+        menu.setVisible(true);
         
     }
     

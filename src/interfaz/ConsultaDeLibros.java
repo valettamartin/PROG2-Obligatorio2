@@ -36,7 +36,8 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
         sepBusqueda = new javax.swing.JSeparator();
         scrBusqueda = new javax.swing.JScrollPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Consulta de Libros");
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTitulo.setText("Titulo:");

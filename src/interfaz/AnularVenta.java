@@ -39,7 +39,7 @@ public class AnularVenta extends javax.swing.JFrame {
         btnVerificar = new javax.swing.JButton();
         btnConfirmarAnulacion = new javax.swing.JToggleButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Anular factura");
 
         lblNumeroFactura.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -61,6 +61,7 @@ public class AnularVenta extends javax.swing.JFrame {
         txtFecha.setEditable(false);
         txtFecha.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtFecha.setText("--/--/----");
+        txtFecha.setEnabled(false);
         txtFecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFechaActionPerformed(evt);
@@ -72,6 +73,7 @@ public class AnularVenta extends javax.swing.JFrame {
 
         txtCliente.setEditable(false);
         txtCliente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtCliente.setEnabled(false);
         txtCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtClienteActionPerformed(evt);
