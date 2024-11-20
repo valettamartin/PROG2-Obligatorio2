@@ -8,6 +8,9 @@ package interfaz;
  *
  * @author marti
  */
+
+import gestiondelibrerias.*;
+
 public class Inicio extends javax.swing.JFrame {
 
 
@@ -22,8 +25,12 @@ public class Inicio extends javax.swing.JFrame {
     private RegistrarLibro registrarLibro;
     private RegistroDeVenta registroDeVenta;
     
+    private Libreria sistema;
+    
     public Inicio() {
         initComponents();
+        
+        sistema = new Libreria();
         
         anularVenta = new AnularVenta();
         buscarIsbn = new BuscarIsbn();
@@ -32,7 +39,8 @@ public class Inicio extends javax.swing.JFrame {
         datosLibro = new DatosLibro();
         registrarAutor = new RegistrarAutor();
         registrarEditorial = new RegistrarEditorial();
-        registrarGenero = new RegistrarGenero();
+        registrarGenero = new RegistrarGenero(sistema);
+        registrarGenero.actualizarLista();
         registrarLibro = new RegistrarLibro();
         registroDeVenta = new RegistroDeVenta();
         

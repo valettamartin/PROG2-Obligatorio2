@@ -93,5 +93,19 @@ public class Libreria {
     }
     // Fin de metodos de agregacion
     
+    // Verificar si el nombre del genero no está repetido
+    public boolean generoRepetido(String nombre) {
+        boolean repetido = false;
+        
+        for (Genero actual : this.getListaGeneros()) {
+            if (actual.getNombre().equals(nombre)) {
+                repetido = true;
+                break;
+            }
+        }
+        
+        return repetido; 
+    }
+    
 }
 

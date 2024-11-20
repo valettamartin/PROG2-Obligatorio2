@@ -8,13 +8,27 @@ package interfaz;
  *
  * @author marti
  */
+
+import gestiondelibrerias.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 public class RegistrarGenero extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistroGenero
      */
+    
+    private Libreria sistema;
+    
     public RegistrarGenero() {
         initComponents();
+    }
+    
+    public RegistrarGenero(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -98,6 +112,11 @@ public class RegistrarGenero extends javax.swing.JFrame {
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.setMargin(new java.awt.Insets(0, 14, 0, 14));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
         pnlRegistroCompletar.add(btnAgregar);
 
         pnlRegistro.add(pnlRegistroCompletar, java.awt.BorderLayout.PAGE_END);
@@ -119,13 +138,68 @@ public class RegistrarGenero extends javax.swing.JFrame {
 
         getContentPane().add(pnlDatos, java.awt.BorderLayout.CENTER);
 
-        setBounds(0, 0, 336, 316);
+        setBounds(0, 0, 336, 457);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtRegistroNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRegistroNombreActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRegistroNombreActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (this.txtRegistroNombre.getText().length() > 0 && this.txtRegistroDescripcion.getText().length() > 0) {
+            if (this.sistema.generoRepetido(this.txtRegistroNombre.getText())) {
+                // Codigo para cuando el genero esta repetido
+                JOptionPane.showMessageDialog(
+                    this,
+                    "El género ya se encuentra registrado.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // Limpiar las casillas de texto, añadir a la lista de generos en sistema y actualizar la lista
+                String nuevoNom = this.txtRegistroNombre.getText();
+                String nuevoDesc = this.txtRegistroDescripcion.getText();
+                
+                Genero nuevoGenero = new Genero(nuevoNom, nuevoDesc);
+                this.sistema.agregarGenero(nuevoGenero);
+                
+                this.actualizarLista();
+                
+                this.txtRegistroNombre.setText("");
+                this.txtRegistroDescripcion.setText("");
+            }
+        } else {
+            if (!(this.txtRegistroNombre.getText().length() > 0)) {
+                // Que hacer cuando no se ingresó un nombre
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado un nombre.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // Que hacer cuando no se ingresó una descripción
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado una descripción.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    public void actualizarLista() {
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+        
+        for (Genero genero : this.sistema.getListaGeneros()) {
+            String textoGenero = genero.getNombre() + ": " + genero.getDescripcion();
+            modelo.addElement(textoGenero); // Agrega al modelo
+        }
+        
+        lstDatos.setModel(modelo);
+    }
+    
     /**
      * @param args the command line arguments
      */
