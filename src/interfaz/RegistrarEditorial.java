@@ -8,13 +8,31 @@ package interfaz;
  *
  * @author marti
  */
+import gestiondelibrerias.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class RegistrarEditorial extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistrarEditorial
      */
+    
+    private Libreria sistema;
+    
     public RegistrarEditorial() {
         initComponents();
+    }
+    
+    public RegistrarEditorial(Libreria sistema) {
+        initComponents();
+        
+        pnlDatos.add(scrDatos, java.awt.BorderLayout.CENTER);
+        scrDatos.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrDatos.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        tblDatos.setFillsViewportHeight(true);
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -105,6 +123,11 @@ public class RegistrarEditorial extends javax.swing.JFrame {
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.setMargin(new java.awt.Insets(0, 14, 0, 14));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
         pnlRegistroCompletar.add(btnAgregar);
 
         pnlRegistro.add(pnlRegistroCompletar, java.awt.BorderLayout.PAGE_END);
@@ -119,20 +142,12 @@ public class RegistrarEditorial extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nombre", "País"
+                "Nombre", "Pais"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        tblDatos.setMaximumSize(new java.awt.Dimension(100, 0));
-        tblDatos.setMinimumSize(new java.awt.Dimension(100, 0));
-        tblDatos.setPreferredSize(new java.awt.Dimension(100, 0));
+        ));
+        tblDatos.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        tblDatos.setMinimumSize(new java.awt.Dimension(100, 50));
+        tblDatos.setPreferredSize(new java.awt.Dimension(300, 200));
         scrDatos.setViewportView(tblDatos);
 
         pnlDatos.add(scrDatos, java.awt.BorderLayout.CENTER);
@@ -140,7 +155,7 @@ public class RegistrarEditorial extends javax.swing.JFrame {
 
         getContentPane().add(pnlDatos, java.awt.BorderLayout.CENTER);
 
-        setBounds(0, 0, 341, 310);
+        setBounds(0, 0, 341, 451);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -151,6 +166,67 @@ public class RegistrarEditorial extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPaisActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (this.txtNombre.getText().length() > 0 && this.txtPais.getText().length() > 0) {
+            // Sabemos que las dos casillas fueron ingresadas
+            if (this.sistema.editorialRepetida(this.txtNombre.getText())) {
+                // La editorial ya fue ingresada previamente
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Ya se ha ingresado a esta librería.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // Todo en orden, continuamos con el registro
+                String nombre = this.txtNombre.getText().trim();
+                String pais = this.txtPais.getText().trim();
+                
+                Editorial editorial = new Editorial(nombre, pais);
+                this.sistema.agregarEditorial(editorial);
+                
+                this.actualizarTabla();
+                
+                this.txtNombre.setText("");
+                this.txtPais.setText("");
+            }
+        } else {
+            if (!(this.txtNombre.getText().length() > 0)) {
+                // No se ingresó un nombre
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado un nombre.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // No se ingresó un pais
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ingresó un país.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    public void actualizarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblDatos.getModel();
+
+        // Vaciamos la tabla
+        modelo.setRowCount(0);
+
+        for (Editorial editorial : this.sistema.getListaEditoriales()) {
+            Object[] fila = {editorial.getNombre(), editorial.getPais()};
+            modelo.addRow(fila);
+        }
+
+        // Forzar redibujado de la tabla
+        tblDatos.setModel(modelo);
+        tblDatos.repaint();
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -41,7 +41,8 @@ public class Inicio extends javax.swing.JFrame {
         registrarAutor = new RegistrarAutor(sistema);
         registrarAutor.actualizarLista();
         
-        registrarEditorial = new RegistrarEditorial();
+        registrarEditorial = new RegistrarEditorial(sistema);
+        registrarEditorial.actualizarTabla();
         
         registrarGenero = new RegistrarGenero(sistema);
         registrarGenero.actualizarLista();

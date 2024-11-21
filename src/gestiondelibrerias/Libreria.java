@@ -121,5 +121,18 @@ public class Libreria {
         return repetido;
     }
     
+    // Verificamos si el nombre de la editorial no esta repetido
+    public boolean editorialRepetida(String nombre) {
+        boolean repetido = false;
+
+        for (Editorial actual : this.getListaEditoriales()) {
+            if (actual.getNombre().trim().equalsIgnoreCase(nombre.trim())) {
+                repetido = true;
+                break;
+            }
+        }
+
+        return repetido; 
+    }
 }
 
