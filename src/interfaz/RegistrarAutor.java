@@ -8,13 +8,28 @@ package interfaz;
  *
  * @author marti
  */
+
+import gestiondelibrerias.*;
+import java.util.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 public class RegistrarAutor extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistrarAutor
      */
+    
+    private Libreria sistema;
+    
     public RegistrarAutor() {
         initComponents();
+    }
+    
+    public RegistrarAutor(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -33,10 +48,10 @@ public class RegistrarAutor extends javax.swing.JFrame {
         txtNacionalidad = new javax.swing.JTextField();
         scrGeneros = new javax.swing.JScrollPane();
         lstGeneros = new javax.swing.JList<>();
-        sepRegistroDatos = new javax.swing.JSeparator();
-        scrDatosPrevios = new javax.swing.JScrollPane();
-        lstDatosPrevios = new javax.swing.JList<>();
         btnAgregar = new javax.swing.JButton();
+        sepRegistroDatos = new javax.swing.JSeparator();
+        scrDatos = new javax.swing.JScrollPane();
+        lstDatos = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Autor");
@@ -70,9 +85,6 @@ public class RegistrarAutor extends javax.swing.JFrame {
         lstGeneros.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         scrGeneros.setViewportView(lstGeneros);
 
-        lstDatosPrevios.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
-        scrDatosPrevios.setViewportView(lstDatosPrevios);
-
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -81,28 +93,31 @@ public class RegistrarAutor extends javax.swing.JFrame {
             }
         });
 
+        lstDatos.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        scrDatos.setViewportView(lstDatos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrDatosPrevios, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(sepRegistroDatos, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(scrDatos)
+                    .addComponent(sepRegistroDatos)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(lblNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtNacionalidad, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(lblGeneros, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(scrGeneros, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(txtNombre))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -124,10 +139,10 @@ public class RegistrarAutor extends javax.swing.JFrame {
                     .addComponent(scrGeneros, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAgregar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sepRegistroDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrDatosPrevios, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -143,9 +158,94 @@ public class RegistrarAutor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNacionalidadActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        if (this.txtNombre.getText().length() > 0 && this.txtNacionalidad.getText().length() > 0 && this.lstGeneros.getSelectedIndex() != -1) {
+            // Aqui sabemos que todas las opciones han sindo ingresadas        
+            if (sistema.autorRepetido(this.txtNombre.getText())) {
+                // Que hacemos si el autor esta repetido
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Ya se ha ingresado a este autor.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // Creamos un nuevo autor y lo añadimos a sistema
+                String nombre = this.txtNombre.getText().trim();
+                String nacionalidad = this.txtNacionalidad.getText().trim();
+                List<String> generosSeleccionados = this.lstGeneros.getSelectedValuesList();
+                ArrayList<String> generos = new ArrayList<>(generosSeleccionados);
+                
+                Autor nuevoAutor = new Autor(nombre, nacionalidad, generos);
+                this.sistema.agregarAutor(nuevoAutor);
+                
+                this.actualizarLista();
+                
+                this.txtNombre.setText("");
+                this.txtNacionalidad.setText("");
+                this.lstGeneros.clearSelection();
+            }
+        // Que hacer cuando faltan datos
+        } else {
+            if (!(this.txtNombre.getText().length() > 0)) {
+                // No se ha ingresado un nombre
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado un nombre.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.txtNacionalidad.getText().length() > 0)) {
+                // No se ha ingresado una nacionalidad
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado una nacionalidad.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // No se ha ingresado un genero
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha seleccionado ningun genero.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    public void actualizarLista() {
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+
+        for (Autor autor : this.sistema.getListaAutores()) {
+            String textoAutor = autor.getNombre() + " - " + autor.getNacionalidad() + " - Generos: ";
+            
+            for (int i = 0 ; i<autor.getGeneros().size() ; i++) {
+                if (i == (autor.getGeneros().size() - 1)) {
+                    // El ultimo genero
+                    textoAutor = textoAutor + autor.getGeneros().get(i);
+                } else {
+                    textoAutor = textoAutor + autor.getGeneros().get(i) + ", ";
+                }
+            }
+            
+            modelo.addElement(textoAutor);
+        }
+
+        lstDatos.setModel(modelo);
+    }
+    
+    public void cargarGeneros() {
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+
+        for (Genero genero : this.sistema.getListaGeneros()) {      
+            modelo.addElement(genero.getNombre());
+        }
+
+        lstGeneros.setModel(modelo);
+    }
+   
+    
     /**
      * @param args the command line arguments
      */
@@ -186,9 +286,9 @@ public class RegistrarAutor extends javax.swing.JFrame {
     private javax.swing.JLabel lblGeneros;
     private javax.swing.JLabel lblNacionalidad;
     private javax.swing.JLabel lblNombre;
-    private javax.swing.JList<String> lstDatosPrevios;
+    private javax.swing.JList<String> lstDatos;
     private javax.swing.JList<String> lstGeneros;
-    private javax.swing.JScrollPane scrDatosPrevios;
+    private javax.swing.JScrollPane scrDatos;
     private javax.swing.JScrollPane scrGeneros;
     private javax.swing.JSeparator sepRegistroDatos;
     private javax.swing.JTextField txtNacionalidad;

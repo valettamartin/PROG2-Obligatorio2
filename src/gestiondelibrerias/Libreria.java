@@ -98,13 +98,27 @@ public class Libreria {
         boolean repetido = false;
         
         for (Genero actual : this.getListaGeneros()) {
-            if (actual.getNombre().equals(nombre)) {
+            if (actual.getNombre().trim().equalsIgnoreCase(nombre.trim())) {
                 repetido = true;
                 break;
             }
         }
         
         return repetido; 
+    }
+    
+    // Verificar si el nombre del autor no esta repetido
+    public boolean autorRepetido(String nombre) {
+        boolean repetido = false;
+    
+        for (Autor actual : this.getListaAutores()) {
+            if (actual.getNombre().trim().equalsIgnoreCase(nombre.trim())) {
+                repetido = true;
+                break;
+            }
+        }
+        
+        return repetido;
     }
     
 }

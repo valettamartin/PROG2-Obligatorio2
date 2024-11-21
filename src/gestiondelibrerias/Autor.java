@@ -4,6 +4,8 @@
  */
 package gestiondelibrerias;
 
+import java.util.*;
+
 /*
 Martín Valetta - 251093
 Santiago Oliveros - 339937
@@ -14,14 +16,15 @@ public class Autor {
     // Atributos
     private String nombre;
     private String nacionalidad;
-    private Genero[] generos; 
-
+    private ArrayList<String> generos; 
+    
     // Constructor vacío
     public Autor() {
+        this.generos = new ArrayList<>();
     }
 
     // Constructor con parámetros
-    public Autor(String nombre, String nacionalidad, Genero[] generos) {
+    public Autor(String nombre, String nacionalidad, ArrayList<String> generos) {
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
         this.generos = generos;
@@ -44,11 +47,11 @@ public class Autor {
         this.nacionalidad = nacionalidad;
     }
 
-    public Genero[] getGeneros() {
+    public ArrayList<String> getGeneros() {
         return this.generos; 
     }
 
-    public void setGeneros(Genero[] generos) {
+    public void setGeneros(ArrayList<String> generos) {
         this.generos = generos;
     }
     // Fin de Getters y Setters

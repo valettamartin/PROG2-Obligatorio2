@@ -157,8 +157,8 @@ public class RegistrarGenero extends javax.swing.JFrame {
                 );
             } else {
                 // Limpiar las casillas de texto, añadir a la lista de generos en sistema y actualizar la lista
-                String nuevoNom = this.txtRegistroNombre.getText();
-                String nuevoDesc = this.txtRegistroDescripcion.getText();
+                String nuevoNom = this.txtRegistroNombre.getText().trim();
+                String nuevoDesc = this.txtRegistroDescripcion.getText().trim();
                 
                 Genero nuevoGenero = new Genero(nuevoNom, nuevoDesc);
                 this.sistema.agregarGenero(nuevoGenero);
@@ -194,7 +194,7 @@ public class RegistrarGenero extends javax.swing.JFrame {
         
         for (Genero genero : this.sistema.getListaGeneros()) {
             String textoGenero = genero.getNombre() + ": " + genero.getDescripcion();
-            modelo.addElement(textoGenero); // Agrega al modelo
+            modelo.addElement(textoGenero); 
         }
         
         lstDatos.setModel(modelo);

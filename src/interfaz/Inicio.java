@@ -37,10 +37,15 @@ public class Inicio extends javax.swing.JFrame {
         consultaDeLibros = new ConsultaDeLibros();
         consultaDeVentas = new ConsultaDeVentas();
         datosLibro = new DatosLibro();
-        registrarAutor = new RegistrarAutor();
+        
+        registrarAutor = new RegistrarAutor(sistema);
+        registrarAutor.actualizarLista();
+        
         registrarEditorial = new RegistrarEditorial();
+        
         registrarGenero = new RegistrarGenero(sistema);
         registrarGenero.actualizarLista();
+        
         registrarLibro = new RegistrarLibro();
         registroDeVenta = new RegistroDeVenta();
         
@@ -169,6 +174,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_itmAnularVentaActionPerformed
 
     private void itmRegistrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarAutorActionPerformed
+        registrarAutor.cargarGeneros();
         registrarAutor.setVisible(true);
     }//GEN-LAST:event_itmRegistrarAutorActionPerformed
 
