@@ -28,12 +28,17 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     public RegistroDeVenta() {
         initComponents();
     }
-    
+
     public RegistroDeVenta(Libreria sistema) {
         initComponents();
-        
+
         this.sistema = sistema;
+        this.librosTemp = new ArrayList<>();
+
+        DefaultListModel<String> modeloVenta = new DefaultListModel<>();
+        lstVenta.setModel(modeloVenta);
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -222,48 +227,45 @@ public class RegistroDeVenta extends javax.swing.JFrame {
                 break;
             }
         }
-        
+
         // Restamos stock del libro temporal y lo registramos a la derecha
         if (libroUtilizado.getStock() < 1) {
             JOptionPane.showMessageDialog(
                 this,
-                "No hay mas stock disponible de este libro.",
+                "No hay más stock disponible de este libro.",
                 "Error",
                 JOptionPane.ERROR_MESSAGE
             );
         } else {
             libroUtilizado.setStock(libroUtilizado.getStock() - 1);
-            
+
             // Creamos el string a añadir
             String nuevoElemento = " - " + libroUtilizado.getTitulo() + " - " + libroUtilizado.getPrecioVenta() + " - " + libroUtilizado.getIsbn();
-            
-            // Nos fijamos si el libro ya esta a la derecha
+
+            // Nos fijamos si el libro ya está a la derecha
             DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
-            
+
             boolean existe = false;
-            for (int i = 0; (i < modeloVenta.getSize()) && (!existe) ; i++) {
+            for (int i = 0; (i < modeloVenta.getSize()) && (!existe); i++) {
                 String elemento = modeloVenta.getElementAt(i);
                 if (elemento.contains(nuevoElemento)) {
                     // Modificamos este elemento para añadirle uno
                     String[] partes = modeloVenta.getElementAt(i).split(" - ");
                     int nuevoPartes = Integer.parseInt(partes[0]) + 1;
                     String nuevoString = nuevoPartes + " - " + partes[1] + " - " + partes[2] + " - " + partes[3];
-                    
+
                     // Lo reasignamos al modelo
                     modeloVenta.setElementAt(nuevoString, i);
-                    
+
                     // Declaramos que ya lo encontramos
                     existe = true; 
                 }
             }
-           
+
             if (!existe) {
-                // Si no existe todavia, lo agregamos al modelo
+                // Si no existe todavía, lo agregamos al modelo
                 modeloVenta.addElement("1" + nuevoElemento);
             }
-            
-            // Actualizamos el modelo de la lista con el nuevo
-            lstVenta.setModel(modeloVenta);
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
