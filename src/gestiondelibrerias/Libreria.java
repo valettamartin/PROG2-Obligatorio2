@@ -134,5 +134,19 @@ public class Libreria {
 
         return repetido; 
     }
+    
+    // Verificamos si el isbn del libro no esta repetieo
+    public boolean libroRepetido(String isbn) {
+        boolean repetido = false;
+        
+        for (Libro actual : this.getListaLibros()) {
+            if (actual.getIsbn().trim().equalsIgnoreCase(isbn.trim())) {
+                repetido = true;
+                break;
+            }
+        }
+        
+        return repetido;
+    }
 }
 

@@ -47,7 +47,10 @@ public class Inicio extends javax.swing.JFrame {
         registrarGenero = new RegistrarGenero(sistema);
         registrarGenero.actualizarLista();
         
-        registrarLibro = new RegistrarLibro();
+        registrarLibro = new RegistrarLibro(sistema);
+        registrarLibro.cargarEditoriales();
+        registrarLibro.cargarGeneros();
+        
         registroDeVenta = new RegistroDeVenta();
         
     }
@@ -159,6 +162,7 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_itmRegistrarEditorialActionPerformed
 
     private void itmRegistrarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarGeneroActionPerformed
+        registrarGenero.actualizarLista();
         registrarGenero.setVisible(true);
     }//GEN-LAST:event_itmRegistrarGeneroActionPerformed
 
@@ -176,10 +180,13 @@ public class Inicio extends javax.swing.JFrame {
 
     private void itmRegistrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarAutorActionPerformed
         registrarAutor.cargarGeneros();
+        registrarAutor.actualizarLista();
         registrarAutor.setVisible(true);
     }//GEN-LAST:event_itmRegistrarAutorActionPerformed
 
     private void itmRegistrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarLibroActionPerformed
+        registrarLibro.cargarEditoriales();
+        registrarLibro.cargarGeneros();
         registrarLibro.setVisible(true);
     }//GEN-LAST:event_itmRegistrarLibroActionPerformed
 

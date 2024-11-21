@@ -12,9 +12,9 @@ Santiago Oliveros - 339937
 public class Libro {
 
     // Atributos
-    private Editorial editorial;
-    private Genero genero;
-    private Autor autor;
+    private String editorial;
+    private String genero;
+    private String autor;
     private String isbn;
     private String titulo;
     private String foto;
@@ -27,7 +27,7 @@ public class Libro {
     }
 
     // Constructor con parámetros
-    public Libro(Editorial editorial, Genero genero, Autor autor, String isbn, String titulo, String foto, int precioCosto, int precioVenta, int stock) {
+    public Libro(String editorial, String genero, String autor, String isbn, String titulo, String foto, int precioCosto, int precioVenta, int stock) {
         this.editorial = editorial;
         this.genero = genero;
         this.autor = autor;
@@ -40,27 +40,27 @@ public class Libro {
     }
 
     // Getters y Setters
-    public Editorial getEditorial() {
+    public String getEditorial() {
         return this.editorial;
     }
 
-    public void setEditorial(Editorial editorial) {
+    public void setEditorial(String editorial) {
         this.editorial = editorial;
     }
 
-    public Genero getGenero() {
+    public String getGenero() {
         return this.genero;
     }
 
-    public void setGenero(Genero genero) {
+    public void setGenero(String genero) {
         this.genero = genero;
     }
 
-    public Autor getAutor() {
+    public String getAutor() {
         return this.autor;
     }
 
-    public void setAutor(Autor autor) {
+    public void setAutor(String autor) {
         this.autor = autor;
     }
 

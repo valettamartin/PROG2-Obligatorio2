@@ -8,13 +8,38 @@ package interfaz;
  *
  * @author marti
  */
+
+import gestiondelibrerias.*;
+import java.awt.BorderLayout;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 public class RegistrarLibro extends javax.swing.JFrame {
 
     /**
      * Creates new form RegistrarLibro
      */
+    
+    private String pathFoto;
+    
+    private Libreria sistema;
+    
     public RegistrarLibro() {
         initComponents();
+    }    
+    
+    public RegistrarLibro(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -36,6 +61,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
         scrAutor = new javax.swing.JScrollPane();
         lstAutor = new javax.swing.JList<>();
         pnlFoto = new javax.swing.JPanel();
+        lblFoto = new javax.swing.JLabel();
         btnFoto = new javax.swing.JButton();
         lblIsbn = new javax.swing.JLabel();
         txtIsbn = new javax.swing.JTextField();
@@ -56,6 +82,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
         lblEditorial.setText("Editorial:");
 
         lstEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lstEditorial.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         lstEditorial.setToolTipText("");
         scrEditorial.setViewportView(lstEditorial);
 
@@ -63,26 +90,39 @@ public class RegistrarLibro extends javax.swing.JFrame {
         lblGenero.setText("Genero:");
 
         lstGenero.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lstGenero.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstGenero.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstGeneroValueChanged(evt);
+            }
+        });
         scrGenero.setViewportView(lstGenero);
 
         lblAutor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblAutor.setText("Autor:");
 
         lstAutor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lstAutor.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrAutor.setViewportView(lstAutor);
 
         pnlFoto.setBackground(new java.awt.Color(255, 255, 255));
         pnlFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        lblFoto.setText("No hay foto");
+
         javax.swing.GroupLayout pnlFotoLayout = new javax.swing.GroupLayout(pnlFoto);
         pnlFoto.setLayout(pnlFotoLayout);
         pnlFotoLayout.setHorizontalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 198, Short.MAX_VALUE)
+            .addGroup(pnlFotoLayout.createSequentialGroup()
+                .addComponent(lblFoto)
+                .addGap(0, 149, Short.MAX_VALUE))
         );
         pnlFotoLayout.setVerticalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGroup(pnlFotoLayout.createSequentialGroup()
+                .addComponent(lblFoto)
+                .addGap(0, 263, Short.MAX_VALUE))
         );
 
         btnFoto.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
@@ -136,6 +176,11 @@ public class RegistrarLibro extends javax.swing.JFrame {
 
         btnAgregar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,15 +198,15 @@ public class RegistrarLibro extends javax.swing.JFrame {
                             .addComponent(lblTitulo))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(scrGenero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                            .addComponent(scrGenero, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(scrEditorial, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtIsbn, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTitulo, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(scrAutor))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(pnlFoto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -169,7 +214,6 @@ public class RegistrarLibro extends javax.swing.JFrame {
                             .addComponent(txtCosto, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(lblVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(189, 189, 189))
@@ -178,7 +222,8 @@ public class RegistrarLibro extends javax.swing.JFrame {
                                     .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                                     .addComponent(txtVenta, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblStock, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -211,10 +256,11 @@ public class RegistrarLibro extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnFoto)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCosto)
-                    .addComponent(lblVenta)
-                    .addComponent(lblStock))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblStock)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblCosto)
+                        .addComponent(lblVenta)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +275,37 @@ public class RegistrarLibro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFotoActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+                "Imágenes (JPG, JPEG, PNG)", "jpg", "jpeg", "png"));
+        int result = fileChooser.showOpenDialog(null);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            pathFoto = selectedFile.getAbsolutePath(); // Almacena la ruta
+
+            // Limpia el panel
+            pnlFoto.removeAll();
+
+            // Cargar la imagen
+            ImageIcon icon = new ImageIcon(pathFoto);
+            Image scaledImage = icon.getImage().getScaledInstance(
+                    pnlFoto.getWidth(), pnlFoto.getHeight(), Image.SCALE_SMOOTH);
+            icon = new ImageIcon(scaledImage);
+
+            // Crear JLabel para mostrar la imagen
+            JLabel lblFoto = new JLabel(icon);
+            lblFoto.setHorizontalAlignment(JLabel.CENTER); // Centra horizontalmente
+            lblFoto.setVerticalAlignment(JLabel.CENTER);   // Centra verticalmente
+
+            // Agregar JLabel al panel
+            pnlFoto.setLayout(new BorderLayout()); // Asegura que el JLabel ocupe todo el espacio del panel
+            pnlFoto.add(lblFoto, BorderLayout.CENTER);
+
+            // Actualiza el panel
+            pnlFoto.revalidate();
+            pnlFoto.repaint();
+        }
     }//GEN-LAST:event_btnFotoActionPerformed
 
     private void txtIsbnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIsbnActionPerformed
@@ -240,9 +316,248 @@ public class RegistrarLibro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTituloActionPerformed
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (this.txtTitulo.getText().length() > 0 && 
+            this.txtIsbn.getText().length() > 0 &&
+            this.esNumeroEntero(this.txtCosto.getText()) && 
+            this.esNumeroEntero(this.txtStock.getText()) &&
+            this.esNumeroEntero(this.txtVenta.getText()) &&
+            this.lstAutor.getSelectedIndex() != -1 &&
+            this.lstEditorial.getSelectedIndex() != -1 &&
+            this.lstGenero.getSelectedIndex() != -1) {
+                // Chequeamos que el stock sea valido
+                if (!(Integer.parseInt(this.txtStock.getText()) >= 0)) {
+                    // El stock es menor que 0
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "El stock no puede ser menor que 0.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                } else if (this.sistema.libroRepetido(this.txtIsbn.getText().trim())) {
+                    // El isbn esta repetido
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "Ya se ha registrado un libro con este isbn.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                } else {
+                    // Todo es valido, ingresamos el nuevo objeto
+                    String editorial = this.lstEditorial.getSelectedValue();
+                    String genero = this.lstGenero.getSelectedValue();
+                    String autor = this.lstAutor.getSelectedValue();
+                    String isbn = this.txtIsbn.getText().trim();
+                    String titulo = this.txtTitulo.getText().trim();
+                    int precioCosto = Integer.parseInt(this.txtCosto.getText());
+                    int precioVenta = Integer.parseInt(this.txtVenta.getText());
+                    int stock = Integer.parseInt(this.txtStock.getText());
+                    
+                    // Verificamos si existe la carpeta imagenes, y sino la creamos
+                    String directorioActual = System.getProperty("user.dir");
+                    String carpetaImagenesPath = directorioActual + File.separator + "imagenes";
+                    File carpetaImagenes = new File(directorioActual + File.separator + "imagenes");
+                    if (!carpetaImagenes.exists()) {
+                        carpetaImagenes.mkdir();
+                    }
+
+                    // Añadimos la imagen seleccionada a la carpeta con un nombre único
+                    File archivoOrigen = new File(pathFoto);
+                    String nombreArchivo = archivoOrigen.getName();
+                    String nombreSinExtension = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("."));
+                    String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
+                    File archivoDestino = new File(carpetaImagenesPath + File.separator + nombreArchivo);
+
+                    int contador = 1;
+                    while (archivoDestino.exists()) {
+                        // Generamos un nuevo nombre único añadiendo un contador
+                        String nuevoNombre = nombreSinExtension + "_" + contador + extension;
+                        archivoDestino = new File(carpetaImagenesPath + File.separator + nuevoNombre);
+                        contador++;
+                    }
+
+                    try {
+                        // Copiar el archivo
+                        Files.copy(archivoOrigen.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(
+                            this,
+                            "Error al copiar la imagen.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                    }
+
+                    // Ruta final del archivo copiado
+                    String foto = archivoDestino.getAbsolutePath();
+                    
+                    // Creamos el nuevo libro
+                    Libro libroNuevo = new Libro(editorial, genero, autor, isbn, titulo, foto, precioCosto, precioVenta, stock);
+                    this.sistema.agregarLibro(libroNuevo);
+                    
+                    // Limpiamos las selecciones
+                    this.txtCosto.setText("");
+                    this.txtVenta.setText("");
+                    this.txtIsbn.setText("");
+                    this.txtStock.setText("");
+                    this.txtTitulo.setText("");
+                    this.lstAutor.clearSelection();
+                    this.lstEditorial.clearSelection();
+                    this.lstGenero.clearSelection();
+                    
+                    this.restaurarPnlFoto();
+                }
+        } else {
+            // Catcheamos errores posibles
+            if (!(this.txtTitulo.getText().length() > 0)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado un titulo.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.txtIsbn.getText().length() > 0)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado un Isbn.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.esNumeroEntero(this.txtCosto.getText()))) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "El valor de coste ingresado no es valido.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.esNumeroEntero(this.txtStock.getText()))) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "El valor de stock ingresado no es valido.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.esNumeroEntero(this.txtVenta.getText()))) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "El valor de venta ingresado no es valido.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.lstAutor.getSelectedIndex() != -1)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha seleccionado un autor.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.lstEditorial.getSelectedIndex() != -1)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha seleccionado una editorial.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (!(this.lstGenero.getSelectedIndex() != -1)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha seleccionado un genero.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void lstGeneroValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstGeneroValueChanged
+        this.cargarAutores(this.lstGenero.getSelectedValue());
+    }//GEN-LAST:event_lstGeneroValueChanged
+
+    public boolean esNumeroEntero(String texto) {
+        try {
+            Integer.parseInt(texto);
+            return true; // Es un número entero
+        } catch (NumberFormatException e) {
+            return false; // No es un número
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
+    
+    // Metodo para cargar la lista de generos
+    public void cargarGeneros() {
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+
+        for (Genero genero : this.sistema.getListaGeneros()) {      
+            modelo.addElement(genero.getNombre());
+        }
+
+        lstGenero.setModel(modelo);
+    }
+
+    // Metodo para cargar la lista de editoriales
+    public void cargarEditoriales() {
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+
+        for (Editorial editorial : this.sistema.getListaEditoriales()) {      
+            modelo.addElement(editorial.getNombre());
+        }
+
+        lstEditorial.setModel(modelo);
+    }
+    
+    // Metodo para cargar la lista de autores que coincidan con un genero
+    public void cargarAutores(String genero) {
+        if (genero != null) {
+            DefaultListModel<String> modelo = new DefaultListModel<>();
+
+            for (Autor autor : this.sistema.getListaAutores()) { 
+                for (String generoActual : autor.getGeneros()) {
+                    if (genero.trim().equalsIgnoreCase(generoActual)) {
+                        modelo.addElement(autor.getNombre());
+                        break; // puede que este break rompa algo, revisar
+                    }
+                }
+            }
+
+            lstAutor.setModel(modelo);
+        }
+    }
+    
+    private void restaurarPnlFoto() {
+        // Limpiar el panel de cualquier contenido actual
+        pnlFoto.removeAll();
+
+        // Restaurar el diseño original
+        pnlFoto.setLayout(new javax.swing.GroupLayout(pnlFoto));
+
+        // Crear una nueva etiqueta lblFoto con el texto original
+        lblFoto = new javax.swing.JLabel("No hay foto");
+        lblFoto.setBounds(0, 0, 149, 263); // Reestablecer las dimensiones originales si es necesario
+
+        // Añadir lblFoto al panel
+        javax.swing.GroupLayout pnlFotoLayout = new javax.swing.GroupLayout(pnlFoto);
+        pnlFoto.setLayout(pnlFotoLayout);
+        pnlFotoLayout.setHorizontalGroup(
+            pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlFotoLayout.createSequentialGroup()
+                    .addComponent(lblFoto)
+                    .addGap(0, 149, Short.MAX_VALUE))
+        );
+        pnlFotoLayout.setVerticalGroup(
+            pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlFotoLayout.createSequentialGroup()
+                    .addComponent(lblFoto)
+                    .addGap(0, 263, Short.MAX_VALUE))
+        );
+
+        // Actualizar la vista
+        pnlFoto.revalidate();
+        pnlFoto.repaint();
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -281,6 +596,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblEditorial;
+    private javax.swing.JLabel lblFoto;
     private javax.swing.JLabel lblGenero;
     private javax.swing.JLabel lblIsbn;
     private javax.swing.JLabel lblStock;
