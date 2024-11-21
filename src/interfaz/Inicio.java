@@ -159,44 +159,73 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void itmRegistrarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarEditorialActionPerformed
+        this.ocultarVentanas();
+        
         registrarEditorial.setVisible(true);
     }//GEN-LAST:event_itmRegistrarEditorialActionPerformed
 
     private void itmRegistrarGeneroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarGeneroActionPerformed
+        this.ocultarVentanas();
+        
         registrarGenero.actualizarLista();
         registrarGenero.setVisible(true);
     }//GEN-LAST:event_itmRegistrarGeneroActionPerformed
 
     private void itmRegistroDeVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistroDeVentaActionPerformed
+        this.ocultarVentanas();
+        
         registroDeVenta.actualizarLibros();
         registroDeVenta.actualizarNroFactura();
         registroDeVenta.setVisible(true);
     }//GEN-LAST:event_itmRegistroDeVentaActionPerformed
 
     private void itmConsultaDeVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmConsultaDeVentasActionPerformed
+        this.ocultarVentanas();
+        
         consultaDeVentas.setVisible(true);
     }//GEN-LAST:event_itmConsultaDeVentasActionPerformed
 
     private void itmAnularVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmAnularVentaActionPerformed
+        this.ocultarVentanas();
+        
         anularVenta.setVisible(true);
     }//GEN-LAST:event_itmAnularVentaActionPerformed
 
     private void itmRegistrarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarAutorActionPerformed
+        this.ocultarVentanas();
+        
         registrarAutor.cargarGeneros();
         registrarAutor.actualizarLista();
         registrarAutor.setVisible(true);
     }//GEN-LAST:event_itmRegistrarAutorActionPerformed
 
     private void itmRegistrarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarLibroActionPerformed
+        this.ocultarVentanas();
+        
         registrarLibro.cargarEditoriales();
         registrarLibro.cargarGeneros();
         registrarLibro.setVisible(true);
     }//GEN-LAST:event_itmRegistrarLibroActionPerformed
 
     private void itmConsultaDeLibrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmConsultaDeLibrosActionPerformed
+        this.ocultarVentanas();
+        
         consultaDeLibros.setVisible(true);
     }//GEN-LAST:event_itmConsultaDeLibrosActionPerformed
 
+    private void ocultarVentanas() {
+        anularVenta.setVisible(false);
+        buscarIsbn.setVisible(false);
+        consultaDeLibros.setVisible(false);
+        consultaDeVentas.setVisible(false);
+        datosLibro.setVisible(false);
+        registrarAutor.setVisible(false);
+        registrarEditorial.setVisible(false);
+        registrarGenero.setVisible(false);
+        registrarLibro.setVisible(false);
+        registroDeVenta.setVisible(false);
+    }
+    
     /**
      * @param args the command line arguments
      */
