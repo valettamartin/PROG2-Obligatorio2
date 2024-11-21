@@ -353,43 +353,46 @@ public class RegistrarLibro extends javax.swing.JFrame {
                     int precioVenta = Integer.parseInt(this.txtVenta.getText());
                     int stock = Integer.parseInt(this.txtStock.getText());
                     
-                    // Verificamos si existe la carpeta imagenes, y sino la creamos
-                    String directorioActual = System.getProperty("user.dir");
-                    String carpetaImagenesPath = directorioActual + File.separator + "imagenes";
-                    File carpetaImagenes = new File(directorioActual + File.separator + "imagenes");
-                    if (!carpetaImagenes.exists()) {
-                        carpetaImagenes.mkdir();
+                                            
+                    String foto = "";
+                    
+                    if (pathFoto != null && !pathFoto.isEmpty()) {
+                        // Verificamos si existe la carpeta imagenes, y si no, la creamos
+                        String directorioActual = System.getProperty("user.dir");
+                        String carpetaImagenesPath = directorioActual + File.separator + "imagenes";
+                        File carpetaImagenes = new File(carpetaImagenesPath);
+                        if (!carpetaImagenes.exists()) {
+                            carpetaImagenes.mkdir();
+                        }
+
+                        // Añadimos la imagen seleccionada a la carpeta con un nombre único
+                        File archivoOrigen = new File(pathFoto);
+                        String nombreArchivo = archivoOrigen.getName();
+                        String nombreSinExtension = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("."));
+                        String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
+                        File archivoDestino = new File(carpetaImagenesPath + File.separator + nombreArchivo);
+
+                        int contador = 1;
+                        while (archivoDestino.exists()) {
+                            // Generamos un nuevo nombre único añadiendo un contador
+                            String nuevoNombre = nombreSinExtension + "_" + contador + extension;
+                            archivoDestino = new File(carpetaImagenesPath + File.separator + nuevoNombre);
+                            contador++;
+                        }
+
+                        try {
+                            // Copiar el archivo
+                            Files.copy(archivoOrigen.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            foto = archivoDestino.getAbsolutePath(); // Guardamos la ruta final
+                        } catch (IOException e) {
+                            JOptionPane.showMessageDialog(
+                                this,
+                                "Error al copiar la imagen.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE
+                            );
+                        }
                     }
-
-                    // Añadimos la imagen seleccionada a la carpeta con un nombre único
-                    File archivoOrigen = new File(pathFoto);
-                    String nombreArchivo = archivoOrigen.getName();
-                    String nombreSinExtension = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("."));
-                    String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
-                    File archivoDestino = new File(carpetaImagenesPath + File.separator + nombreArchivo);
-
-                    int contador = 1;
-                    while (archivoDestino.exists()) {
-                        // Generamos un nuevo nombre único añadiendo un contador
-                        String nuevoNombre = nombreSinExtension + "_" + contador + extension;
-                        archivoDestino = new File(carpetaImagenesPath + File.separator + nuevoNombre);
-                        contador++;
-                    }
-
-                    try {
-                        // Copiar el archivo
-                        Files.copy(archivoOrigen.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(
-                            this,
-                            "Error al copiar la imagen.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                        );
-                    }
-
-                    // Ruta final del archivo copiado
-                    String foto = archivoDestino.getAbsolutePath();
                     
                     // Creamos el nuevo libro
                     Libro libroNuevo = new Libro(editorial, genero, autor, isbn, titulo, foto, precioCosto, precioVenta, stock);

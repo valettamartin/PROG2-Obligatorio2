@@ -19,6 +19,7 @@ public class Libreria {
     private ArrayList<Autor> listaAutores;
     private ArrayList<Libro> listaLibros;
     private ArrayList<Venta> listaVentas;
+    private int facturaActual;
 
     // Constructor vacío
     public Libreria() {
@@ -27,9 +28,18 @@ public class Libreria {
         this.listaAutores = new ArrayList<>();
         this.listaLibros = new ArrayList<>();
         this.listaVentas = new ArrayList<>();
+        this.facturaActual = 1;
     }
 
     // Getters y Setters
+    public int getFacturaActual() {
+        return this.facturaActual;
+    }
+    
+    public void setFacturaActual(int valor) {
+        this.facturaActual = valor;
+    }
+    
     public ArrayList<Editorial> getListaEditoriales() {
         return this.listaEditoriales;
     }

@@ -4,6 +4,15 @@
  */
 package interfaz;
 
+import gestiondelibrerias.Genero;
+import gestiondelibrerias.Libreria;
+import gestiondelibrerias.Libro;
+import gestiondelibrerias.Venta;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+
 /**
  *
  * @author marti
@@ -13,8 +22,17 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     /**
      * Creates new form RegistroDeVenta
      */
+    private Libreria sistema;
+    private ArrayList<Libro> librosTemp;
+    
     public RegistroDeVenta() {
         initComponents();
+    }
+    
+    public RegistroDeVenta(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -50,6 +68,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         lblLibros.setText("Libros");
 
         lstLibros.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        lstLibros.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         scrLibros.setViewportView(lstLibros);
 
         btnAgregar.setText("->");
@@ -60,6 +79,11 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         });
 
         btnEliminar.setText("<-");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         lblVenta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblVenta.setText("Venta");
@@ -185,7 +209,62 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        // Conseguimos el isbn del libro seleccionado
+        String libroSeleccionado = this.lstLibros.getSelectedValue();
+        String[] separado = libroSeleccionado.split(" - ");
+        String isbnSeleccionado = separado[0];
+
+        // Buscamos el libro temporal que se corresponde con el libro en la lista
+        Libro libroUtilizado = new Libro();
+        for (Libro libro : librosTemp) {
+            if (isbnSeleccionado.equals(libro.getIsbn())) {
+                libroUtilizado = libro;
+                break;
+            }
+        }
+        
+        // Restamos stock del libro temporal y lo registramos a la derecha
+        if (libroUtilizado.getStock() < 1) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No hay mas stock disponible de este libro.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        } else {
+            libroUtilizado.setStock(libroUtilizado.getStock() - 1);
+            
+            // Creamos el string a añadir
+            String nuevoElemento = " - " + libroUtilizado.getTitulo() + " - " + libroUtilizado.getPrecioVenta() + " - " + libroUtilizado.getIsbn();
+            
+            // Nos fijamos si el libro ya esta a la derecha
+            DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
+            
+            boolean existe = false;
+            for (int i = 0; (i < modeloVenta.getSize()) && (!existe) ; i++) {
+                String elemento = modeloVenta.getElementAt(i);
+                if (elemento.contains(nuevoElemento)) {
+                    // Modificamos este elemento para añadirle uno
+                    String[] partes = modeloVenta.getElementAt(i).split(" - ");
+                    int nuevoPartes = Integer.parseInt(partes[0]) + 1;
+                    String nuevoString = nuevoPartes + " - " + partes[1] + " - " + partes[2] + " - " + partes[3];
+                    
+                    // Lo reasignamos al modelo
+                    modeloVenta.setElementAt(nuevoString, i);
+                    
+                    // Declaramos que ya lo encontramos
+                    existe = true; 
+                }
+            }
+           
+            if (!existe) {
+                // Si no existe todavia, lo agregamos al modelo
+                modeloVenta.addElement("1" + nuevoElemento);
+            }
+            
+            // Actualizamos el modelo de la lista con el nuevo
+            lstVenta.setModel(modeloVenta);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
@@ -196,6 +275,26 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // Boton de eliminar libro del carrito
+    }//GEN-LAST:event_btnEliminarActionPerformed
+    
+    public void actualizarLibros() {
+        DefaultListModel<String> modelo = new DefaultListModel<>();
+    
+        for (Libro libro : this.sistema.getListaLibros()) {
+            String textoGenero = libro.getIsbn() + " - " + libro.getTitulo();
+            librosTemp.add(libro);
+            modelo.addElement(textoGenero); 
+        }
+        
+        lstLibros.setModel(modelo);
+    }
+    
+    public void actualizarNroFactura() {
+        this.lblNroFactura.setText("Factura: " + this.sistema.getFacturaActual());
+    }
+    
     /**
      * @param args the command line arguments
      */

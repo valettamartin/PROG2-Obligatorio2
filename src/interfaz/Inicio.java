@@ -51,7 +51,8 @@ public class Inicio extends javax.swing.JFrame {
         registrarLibro.cargarEditoriales();
         registrarLibro.cargarGeneros();
         
-        registroDeVenta = new RegistroDeVenta();
+        registroDeVenta = new RegistroDeVenta(sistema);
+        registroDeVenta.actualizarLibros();
         
     }
 
@@ -167,6 +168,8 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_itmRegistrarGeneroActionPerformed
 
     private void itmRegistroDeVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistroDeVentaActionPerformed
+        registroDeVenta.actualizarLibros();
+        registroDeVenta.actualizarNroFactura();
         registroDeVenta.setVisible(true);
     }//GEN-LAST:event_itmRegistroDeVentaActionPerformed
 
