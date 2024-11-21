@@ -278,7 +278,63 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // Boton de eliminar libro del carrito
+        // Obtenemos el libro seleccionado de la lista de ventas
+        String libroSeleccionado = this.lstVenta.getSelectedValue();
+
+        if (libroSeleccionado == null) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Por favor, seleccione un libro para eliminar del carrito.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Dividimos la cadena seleccionada para obtener los datos
+        String[] separado = libroSeleccionado.split(" - ");
+        String isbnSeleccionado = separado[3]; // El ISBN está al final
+
+        // Buscamos el libro correspondiente en librosTemp
+        Libro libroUtilizado = null;
+        for (Libro libro : librosTemp) {
+            if (isbnSeleccionado.equals(libro.getIsbn())) {
+                libroUtilizado = libro;
+                break;
+            }
+        }
+
+        if (libroUtilizado == null) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se encontró el libro correspondiente en la lista temporal.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Aumentamos el stock del libro
+        libroUtilizado.setStock(libroUtilizado.getStock() + 1);
+
+        // Obtenemos el modelo de la lista de ventas
+        DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
+
+        // Actualizamos o eliminamos el elemento en la lista de ventas
+        int cantidad = Integer.parseInt(separado[0]); // La cantidad es el primer valor
+        if (cantidad > 1) {
+            // Si hay más de 1, actualizamos el elemento restando 1
+            cantidad--;
+            String nuevoElemento = cantidad + " - " + separado[1] + " - " + separado[2] + " - " + separado[3];
+            int index = lstVenta.getSelectedIndex();
+            modeloVenta.setElementAt(nuevoElemento, index);
+        } else {
+            // Si solo hay 1, eliminamos el elemento de la lista
+            modeloVenta.removeElement(libroSeleccionado);
+        }
+
+        // Actualizamos el modelo de la lista de ventas
+        lstVenta.setModel(modeloVenta);
     }//GEN-LAST:event_btnEliminarActionPerformed
     
     public void actualizarLibros() {
