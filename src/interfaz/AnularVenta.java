@@ -36,6 +36,8 @@ public class AnularVenta extends javax.swing.JFrame {
         txtFecha = new javax.swing.JTextField();
         lblCliente = new javax.swing.JLabel();
         txtCliente = new javax.swing.JTextField();
+        lblFecha1 = new javax.swing.JLabel();
+        txtFecha1 = new javax.swing.JTextField();
         btnVerificar = new javax.swing.JButton();
         btnConfirmarAnulacion = new javax.swing.JToggleButton();
 
@@ -80,6 +82,18 @@ public class AnularVenta extends javax.swing.JFrame {
             }
         });
 
+        lblFecha1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFecha1.setText("Importe:");
+
+        txtFecha1.setEditable(false);
+        txtFecha1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtFecha1.setEnabled(false);
+        txtFecha1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFecha1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlDatosFacturaLayout = new javax.swing.GroupLayout(pnlDatosFactura);
         pnlDatosFactura.setLayout(pnlDatosFacturaLayout);
         pnlDatosFacturaLayout.setHorizontalGroup(
@@ -92,11 +106,17 @@ public class AnularVenta extends javax.swing.JFrame {
                         .addComponent(lblCliente)
                         .addGap(11, 11, 11)
                         .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE))
-                    .addComponent(lblLibros)
+                    .addGroup(pnlDatosFacturaLayout.createSequentialGroup()
+                        .addComponent(lblLibros)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pnlDatosFacturaLayout.createSequentialGroup()
                         .addComponent(lblFecha)
                         .addGap(18, 18, 18)
-                        .addComponent(txtFecha)))
+                        .addComponent(txtFecha)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblFecha1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlDatosFacturaLayout.setVerticalGroup(
@@ -105,7 +125,9 @@ public class AnularVenta extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlDatosFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFecha)
-                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFecha1)
+                    .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlDatosFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCliente)
@@ -168,6 +190,10 @@ public class AnularVenta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtClienteActionPerformed
 
+    private void txtFecha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecha1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFecha1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -208,6 +234,7 @@ public class AnularVenta extends javax.swing.JFrame {
     private javax.swing.JButton btnVerificar;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblFecha;
+    private javax.swing.JLabel lblFecha1;
     private javax.swing.JLabel lblLibros;
     private javax.swing.JLabel lblNumeroFactura;
     private javax.swing.JList<String> lstLibros;
@@ -215,6 +242,7 @@ public class AnularVenta extends javax.swing.JFrame {
     private javax.swing.JScrollPane scrLibros;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtFecha1;
     private javax.swing.JTextField txtNumeroFactura;
     // End of variables declaration//GEN-END:variables
 }

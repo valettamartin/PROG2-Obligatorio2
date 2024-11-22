@@ -4,15 +4,12 @@
  */
 package interfaz;
 
-import gestiondelibrerias.Genero;
 import gestiondelibrerias.Libreria;
 import gestiondelibrerias.Libro;
 import gestiondelibrerias.Venta;
-import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 
 /**
  *
@@ -352,6 +349,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
 
         int factura = sistema.getFacturaActual();
         HashMap<Libro, Integer> librosVendidos = new HashMap<>();
+        double precioCompra = 0; // Variable para acumular el total de la venta
 
         DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
 
@@ -359,6 +357,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             String elementoVenta = modeloVenta.getElementAt(i);
             String[] separado = elementoVenta.split(" - ");
             int cantidad = Integer.parseInt(separado[0]);
+            double precioVenta = Double.parseDouble(separado[2]); // El precio de venta
             String isbn = separado[3];
 
             for (Libro libro : sistema.getListaLibros()) {
@@ -375,12 +374,14 @@ public class RegistroDeVenta extends javax.swing.JFrame {
 
                     libro.setStock(libro.getStock() - cantidad);
                     librosVendidos.put(libro, cantidad);
+                    precioCompra += precioVenta * cantidad; // Sumar el precio total de este libro
                     break;
                 }
             }
         }
 
-        Venta nuevaVenta = new Venta(fecha, cliente, factura, librosVendidos);
+        // Crear el objeto Venta con el precio de compra incluido
+        Venta nuevaVenta = new Venta(fecha, cliente, factura, librosVendidos, (int) precioCompra);
         sistema.agregarVenta(nuevaVenta);
 
         // Limpieza: vaciar el modelo de la lista de ventas

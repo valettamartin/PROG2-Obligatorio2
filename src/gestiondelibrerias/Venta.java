@@ -17,19 +17,22 @@ public class Venta {
     private String fecha;
     private String cliente;
     private int factura;
+    private int precioCompra;
     private HashMap<Libro, Integer> libros; // Clave: Libro, Valor: Cantidad vendida
 
     // Constructor vacío
     public Venta() {
         this.libros = new HashMap<>();
+        this.precioCompra = 0;
     }
 
     // Constructor con parámetros
-    public Venta(String fecha, String cliente, int factura, HashMap<Libro, Integer> libros) {
+    public Venta(String fecha, String cliente, int factura, HashMap<Libro, Integer> libros, int precioCompra) {
         this.fecha = fecha;
         this.cliente = cliente;
         this.factura = factura;
         this.libros = libros;
+        this.precioCompra = precioCompra;
     }
 
     // Getters y Setters
@@ -63,6 +66,14 @@ public class Venta {
 
     public void setLibros(HashMap<Libro, Integer> libros) {
         this.libros = libros;
+    }
+    
+    public int getPrecioCompra() {
+        return this.precioCompra;
+    }
+
+    public void setPrecioCompra(int precioCompra) {
+        this.precioCompra = precioCompra;
     }
     // Fin Getters y Setters
 
