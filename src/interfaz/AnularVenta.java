@@ -4,6 +4,13 @@
  */
 package interfaz;
 
+import gestiondelibrerias.Genero;
+import gestiondelibrerias.Libreria;
+import gestiondelibrerias.Libro;
+import gestiondelibrerias.Venta;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author marti
@@ -13,8 +20,17 @@ public class AnularVenta extends javax.swing.JFrame {
     /**
      * Creates new form AnularVenta
      */
+    
+    private Libreria sistema;
+    
     public AnularVenta() {
         initComponents();
+    }
+    
+    public AnularVenta(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -36,8 +52,8 @@ public class AnularVenta extends javax.swing.JFrame {
         txtFecha = new javax.swing.JTextField();
         lblCliente = new javax.swing.JLabel();
         txtCliente = new javax.swing.JTextField();
-        lblFecha1 = new javax.swing.JLabel();
-        txtFecha1 = new javax.swing.JTextField();
+        lblValor = new javax.swing.JLabel();
+        txtValor = new javax.swing.JTextField();
         btnVerificar = new javax.swing.JButton();
         btnConfirmarAnulacion = new javax.swing.JToggleButton();
 
@@ -82,15 +98,15 @@ public class AnularVenta extends javax.swing.JFrame {
             }
         });
 
-        lblFecha1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblFecha1.setText("Importe:");
+        lblValor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblValor.setText("Importe:");
 
-        txtFecha1.setEditable(false);
-        txtFecha1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtFecha1.setEnabled(false);
-        txtFecha1.addActionListener(new java.awt.event.ActionListener() {
+        txtValor.setEditable(false);
+        txtValor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtValor.setEnabled(false);
+        txtValor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFecha1ActionPerformed(evt);
+                txtValorActionPerformed(evt);
             }
         });
 
@@ -114,9 +130,9 @@ public class AnularVenta extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtFecha)
                         .addGap(18, 18, 18)
-                        .addComponent(lblFecha1)
+                        .addComponent(lblValor)
                         .addGap(18, 18, 18)
-                        .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         pnlDatosFacturaLayout.setVerticalGroup(
@@ -126,8 +142,8 @@ public class AnularVenta extends javax.swing.JFrame {
                 .addGroup(pnlDatosFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblFecha)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFecha1)
-                    .addComponent(txtFecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblValor)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlDatosFacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCliente)
@@ -141,6 +157,11 @@ public class AnularVenta extends javax.swing.JFrame {
 
         btnVerificar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnVerificar.setText("Verificar");
+        btnVerificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerificarActionPerformed(evt);
+            }
+        });
 
         btnConfirmarAnulacion.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnConfirmarAnulacion.setText("Confirmar anulación");
@@ -190,9 +211,63 @@ public class AnularVenta extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtClienteActionPerformed
 
-    private void txtFecha1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFecha1ActionPerformed
+    private void txtValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtValorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtFecha1ActionPerformed
+    }//GEN-LAST:event_txtValorActionPerformed
+
+    private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
+        // Recorremos la lista de ventas buscando una cuyo número coincida con el ingresado
+        Venta ventaActual = new Venta();
+        boolean found = false;
+        try {
+            int numeroFactura = Integer.parseInt(this.txtNumeroFactura.getText());
+
+            for (Venta venta : sistema.getListaVentas()) {
+                if (venta.getFactura() == numeroFactura) {
+                    ventaActual = venta;
+                    found = true;
+                    break;
+                }
+            }
+
+            // Si la venta existe, cargamos sus datos
+            if (found) {
+                this.txtFecha.setText(ventaActual.getFecha());
+                this.txtCliente.setText(ventaActual.getCliente());
+                this.txtValor.setText(String.format("%.2f", (double) ventaActual.getPrecioCompra()));
+
+                // Creamos el modelo de la lista de libros comprados
+                DefaultListModel<String> modelo = new DefaultListModel<>();
+                for (Libro libro : ventaActual.getLibros().keySet()) {
+                    int cantidad = ventaActual.getLibros().get(libro);
+                    String titulo = libro.getTitulo();
+                    String isbn = libro.getIsbn();
+                    double precioUnitario = libro.getPrecioVenta();
+
+                    // Formamos el string y lo añadimos al modelo
+                    String linea = String.format("%d - %s - %s - %.2f", cantidad, titulo, isbn, precioUnitario);
+                    modelo.addElement(linea);
+                }
+                lstLibros.setModel(modelo);
+
+            } else {
+                // Caso contrario, mostramos error
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha encontrado una factura con este número.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Por favor, ingrese un número de factura válido.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_btnVerificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,15 +309,15 @@ public class AnularVenta extends javax.swing.JFrame {
     private javax.swing.JButton btnVerificar;
     private javax.swing.JLabel lblCliente;
     private javax.swing.JLabel lblFecha;
-    private javax.swing.JLabel lblFecha1;
     private javax.swing.JLabel lblLibros;
     private javax.swing.JLabel lblNumeroFactura;
+    private javax.swing.JLabel lblValor;
     private javax.swing.JList<String> lstLibros;
     private javax.swing.JPanel pnlDatosFactura;
     private javax.swing.JScrollPane scrLibros;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JTextField txtFecha;
-    private javax.swing.JTextField txtFecha1;
     private javax.swing.JTextField txtNumeroFactura;
+    private javax.swing.JTextField txtValor;
     // End of variables declaration//GEN-END:variables
 }

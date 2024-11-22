@@ -108,9 +108,9 @@
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="txtFecha" max="32767" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="lblFecha1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblValor" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="txtFecha1" min="-2" pref="158" max="-2" attributes="0"/>
+                          <Component id="txtValor" min="-2" pref="158" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -124,8 +124,8 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblFecha" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtFecha" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblFecha1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtFecha1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblValor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtValor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -210,7 +210,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtClienteActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblFecha1">
+        <Component class="javax.swing.JLabel" name="lblValor">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="14" style="0"/>
@@ -218,7 +218,7 @@
             <Property name="text" type="java.lang.String" value="Importe:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtFecha1">
+        <Component class="javax.swing.JTextField" name="txtValor">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -227,7 +227,7 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFecha1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtValorActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
@@ -239,6 +239,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Verificar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVerificarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JToggleButton" name="btnConfirmarAnulacion">
       <Properties>

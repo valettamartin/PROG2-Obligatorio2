@@ -32,7 +32,8 @@ public class Inicio extends javax.swing.JFrame {
         
         sistema = new Libreria();
         
-        anularVenta = new AnularVenta();
+        anularVenta = new AnularVenta(sistema);
+        
         buscarIsbn = new BuscarIsbn();
         consultaDeLibros = new ConsultaDeLibros();
         consultaDeVentas = new ConsultaDeVentas();
