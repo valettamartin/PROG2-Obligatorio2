@@ -21,6 +21,8 @@ public class AnularVenta extends javax.swing.JFrame {
      * Creates new form AnularVenta
      */
     
+    private int facturaCargada;
+    
     private Libreria sistema;
     
     public AnularVenta() {
@@ -31,6 +33,8 @@ public class AnularVenta extends javax.swing.JFrame {
         initComponents();
         
         this.sistema = sistema;
+        
+        this.facturaCargada = 0;
     }
 
     /**
@@ -165,6 +169,11 @@ public class AnularVenta extends javax.swing.JFrame {
 
         btnConfirmarAnulacion.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnConfirmarAnulacion.setText("Confirmar anulación");
+        btnConfirmarAnulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarAnulacionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -232,6 +241,8 @@ public class AnularVenta extends javax.swing.JFrame {
 
             // Si la venta existe, cargamos sus datos
             if (found) {
+                this.facturaCargada = Integer.parseInt(this.txtNumeroFactura.getText());
+                
                 this.txtFecha.setText(ventaActual.getFecha());
                 this.txtCliente.setText(ventaActual.getCliente());
                 this.txtValor.setText(String.format("%.2f", (double) ventaActual.getPrecioCompra()));
@@ -268,6 +279,64 @@ public class AnularVenta extends javax.swing.JFrame {
             );
         }
     }//GEN-LAST:event_btnVerificarActionPerformed
+
+    private void btnConfirmarAnulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarAnulacionActionPerformed
+        // Verificamos que exista una factura cargada
+        if (this.facturaCargada != 0) {
+            // Eliminamos la factura correspondiente del sistema
+            boolean removed = false;
+            Venta ventaAnulada = null;
+
+            for (Venta venta : sistema.getListaVentas()) {
+                if (venta.getFactura() == this.facturaCargada) {
+                    ventaAnulada = venta; // Guardamos la venta para restaurar el stock
+                    sistema.getListaVentas().remove(venta);
+                    removed = true;
+                    break;
+                }
+            }
+
+            if (removed && ventaAnulada != null) {
+                // Restauramos el stock de los libros
+                for (Libro libro : ventaAnulada.getLibros().keySet()) {
+                    int cantidadVendida = ventaAnulada.getLibros().get(libro);
+                    libro.setStock(libro.getStock() + cantidadVendida);
+                }
+
+                // Damos un aviso por JOptionPane de que se tuvo éxito
+                JOptionPane.showMessageDialog(
+                    this,
+                    "La factura ha sido anulada correctamente y el stock ha sido restaurado.",
+                    "Éxito",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+
+                // Limpiamos los valores en lstLibros, txtValor, txtCliente y txtFecha
+                this.lstLibros.setModel(new DefaultListModel<>()); // Limpia la lista de libros
+                this.txtValor.setText("");
+                this.txtCliente.setText("");
+                this.txtFecha.setText("--/--/----");
+                this.txtNumeroFactura.setText(""); // Limpia el número de factura ingresado
+                this.facturaCargada = 0; // Reinicia el estado de la factura cargada
+            } else {
+                // Por si acaso, aunque esto no debería ocurrir, mostramos un mensaje de error
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo encontrar la factura en el sistema para anularla.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } else {
+            // Damos un aviso de que no se ha cargado una factura todavía
+            JOptionPane.showMessageDialog(
+                this,
+                "No se ha cargado una factura para anular.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }//GEN-LAST:event_btnConfirmarAnulacionActionPerformed
 
     /**
      * @param args the command line arguments
