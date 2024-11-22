@@ -317,6 +317,19 @@ public class RegistrarLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTituloActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // Validamos que no se esten utilizando los caracteres utilizados para el trim
+        if (this.txtTitulo.getText().contains(" - ") || 
+            this.txtIsbn.getText().contains(" - ") ||
+            this.txtVenta.getText().contains(" - ")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Los campos ISBN, Título y Precio de Venta no pueden contener el texto ' - '.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return; // Salimos de la acción si se detectan caracteres prohibidos
+        }
+
         if (this.txtTitulo.getText().length() > 0 && 
             this.txtIsbn.getText().length() > 0 &&
             this.esNumeroEntero(this.txtCosto.getText()) && 
