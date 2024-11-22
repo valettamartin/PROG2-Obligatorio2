@@ -302,7 +302,14 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFechaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        // Obtenemos el modelo de lstVenta
+        DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
+
+        // Limpiar lstVenta, txtFecha, txtCliente y lblTotal
+        modeloVenta.clear();
+        txtFecha.setText("--/--/----");
+        txtCliente.setText("");
+        lblTotal.setText("Total: $ 0");
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
