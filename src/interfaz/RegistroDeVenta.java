@@ -9,6 +9,7 @@ import gestiondelibrerias.Libreria;
 import gestiondelibrerias.Libro;
 import gestiondelibrerias.Venta;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
@@ -23,7 +24,6 @@ public class RegistroDeVenta extends javax.swing.JFrame {
      * Creates new form RegistroDeVenta
      */
     private Libreria sistema;
-    private ArrayList<Libro> librosTemp;
     
     public RegistroDeVenta() {
         initComponents();
@@ -31,9 +31,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
 
     public RegistroDeVenta(Libreria sistema) {
         initComponents();
-
         this.sistema = sistema;
-        this.librosTemp = new ArrayList<>();
 
         DefaultListModel<String> modeloVenta = new DefaultListModel<>();
         lstVenta.setModel(modeloVenta);
@@ -120,6 +118,11 @@ public class RegistroDeVenta extends javax.swing.JFrame {
 
         btnRegistrar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnCancelar.setText("Cancelar");
@@ -214,59 +217,87 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // Conseguimos el isbn del libro seleccionado
         String libroSeleccionado = this.lstLibros.getSelectedValue();
+        if (libroSeleccionado == null) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Por favor, seleccione un libro para agregar al carrito.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
         String[] separado = libroSeleccionado.split(" - ");
         String isbnSeleccionado = separado[0];
 
-        // Buscamos el libro temporal que se corresponde con el libro en la lista
-        Libro libroUtilizado = new Libro();
-        for (Libro libro : librosTemp) {
+        // Buscar el libro en sistema.getListaLibros()
+        Libro libroUtilizado = null;
+        for (Libro libro : sistema.getListaLibros()) {
             if (isbnSeleccionado.equals(libro.getIsbn())) {
                 libroUtilizado = libro;
                 break;
             }
         }
 
-        // Restamos stock del libro temporal y lo registramos a la derecha
-        if (libroUtilizado.getStock() < 1) {
+        if (libroUtilizado == null) {
             JOptionPane.showMessageDialog(
                 this,
-                "No hay más stock disponible de este libro.",
+                "Error: No se encontró el libro en la lista del sistema.",
                 "Error",
                 JOptionPane.ERROR_MESSAGE
             );
-        } else {
-            libroUtilizado.setStock(libroUtilizado.getStock() - 1);
+            return;
+        }
 
-            // Creamos el string a añadir
-            String nuevoElemento = " - " + libroUtilizado.getTitulo() + " - " + libroUtilizado.getPrecioVenta() + " - " + libroUtilizado.getIsbn();
+        // Verificar si ya existe en la lista de ventas y calcular el total de unidades actuales
+        DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
+        int cantidadActualEnCarrito = 0;
+        boolean existe = false;
 
-            // Nos fijamos si el libro ya está a la derecha
-            DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
-
-            boolean existe = false;
-            for (int i = 0; (i < modeloVenta.getSize()) && (!existe); i++) {
-                String elemento = modeloVenta.getElementAt(i);
-                if (elemento.contains(nuevoElemento)) {
-                    // Modificamos este elemento para añadirle uno
-                    String[] partes = modeloVenta.getElementAt(i).split(" - ");
-                    int nuevoPartes = Integer.parseInt(partes[0]) + 1;
-                    String nuevoString = nuevoPartes + " - " + partes[1] + " - " + partes[2] + " - " + partes[3];
-
-                    // Lo reasignamos al modelo
-                    modeloVenta.setElementAt(nuevoString, i);
-
-                    // Declaramos que ya lo encontramos
-                    existe = true; 
-                }
-            }
-
-            if (!existe) {
-                // Si no existe todavía, lo agregamos al modelo
-                modeloVenta.addElement("1" + nuevoElemento);
+        for (int i = 0; i < modeloVenta.getSize(); i++) {
+            String elemento = modeloVenta.getElementAt(i);
+            if (elemento.contains(libroUtilizado.getIsbn())) {
+                String[] partes = elemento.split(" - ");
+                cantidadActualEnCarrito = Integer.parseInt(partes[0]);
+                existe = true;
+                break;
             }
         }
+
+        // Verificar que el total no supere el stock
+        if (cantidadActualEnCarrito + 1 > libroUtilizado.getStock()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se puede agregar más unidades. Stock disponible: " + libroUtilizado.getStock(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Crear el string para la lista de ventas
+        String nuevoElemento = " - " + libroUtilizado.getTitulo() + " - " + libroUtilizado.getPrecioVenta() + " - " + libroUtilizado.getIsbn();
+
+        if (existe) {
+            // Actualizamos el elemento si ya existe
+            for (int i = 0; i < modeloVenta.getSize(); i++) {
+                String elemento = modeloVenta.getElementAt(i);
+                if (elemento.contains(libroUtilizado.getIsbn())) {
+                    String[] partes = elemento.split(" - ");
+                    int nuevaCantidad = Integer.parseInt(partes[0]) + 1;
+                    String nuevoString = nuevaCantidad + " - " + partes[1] + " - " + partes[2] + " - " + partes[3];
+                    modeloVenta.setElementAt(nuevoString, i);
+                    break;
+                }
+            }
+        } else {
+            // Si no existe en el carrito, lo agregamos
+            modeloVenta.addElement("1" + nuevoElemento);
+        }
+
+        // Actualizamos el total acumulado
+        actualizarTotal(libroUtilizado.getPrecioVenta());
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
@@ -278,7 +309,6 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // Obtenemos el libro seleccionado de la lista de ventas
         String libroSeleccionado = this.lstVenta.getSelectedValue();
 
         if (libroSeleccionado == null) {
@@ -291,37 +321,13 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             return;
         }
 
-        // Dividimos la cadena seleccionada para obtener los datos
         String[] separado = libroSeleccionado.split(" - ");
+        int cantidad = Integer.parseInt(separado[0]); // La cantidad es el primer valor
+        double precioVenta = Double.parseDouble(separado[2]); // El precio está en la tercera posición
         String isbnSeleccionado = separado[3]; // El ISBN está al final
 
-        // Buscamos el libro correspondiente en librosTemp
-        Libro libroUtilizado = null;
-        for (Libro libro : librosTemp) {
-            if (isbnSeleccionado.equals(libro.getIsbn())) {
-                libroUtilizado = libro;
-                break;
-            }
-        }
-
-        if (libroUtilizado == null) {
-            JOptionPane.showMessageDialog(
-                this,
-                "No se encontró el libro correspondiente en la lista temporal.",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
-
-        // Aumentamos el stock del libro
-        libroUtilizado.setStock(libroUtilizado.getStock() + 1);
-
-        // Obtenemos el modelo de la lista de ventas
         DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
 
-        // Actualizamos o eliminamos el elemento en la lista de ventas
-        int cantidad = Integer.parseInt(separado[0]); // La cantidad es el primer valor
         if (cantidad > 1) {
             // Si hay más de 1, actualizamos el elemento restando 1
             cantidad--;
@@ -330,27 +336,94 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             modeloVenta.setElementAt(nuevoElemento, index);
         } else {
             // Si solo hay 1, eliminamos el elemento de la lista
-            modeloVenta.removeElement(libroSeleccionado);
+            modeloVenta.removeElementAt(lstVenta.getSelectedIndex());
         }
 
-        // Actualizamos el modelo de la lista de ventas
-        lstVenta.setModel(modeloVenta);
+        // Actualizamos el total acumulado restando el precio del libro eliminado
+        actualizarTotal(-precioVenta);
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        String fecha = txtFecha.getText().trim();
+        String cliente = txtCliente.getText().trim();
+
+        if (fecha.isEmpty()) fecha = "";
+        if (cliente.isEmpty()) cliente = "";
+
+        int factura = sistema.getFacturaActual();
+        HashMap<Libro, Integer> librosVendidos = new HashMap<>();
+
+        DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
+
+        for (int i = 0; i < modeloVenta.getSize(); i++) {
+            String elementoVenta = modeloVenta.getElementAt(i);
+            String[] separado = elementoVenta.split(" - ");
+            int cantidad = Integer.parseInt(separado[0]);
+            String isbn = separado[3];
+
+            for (Libro libro : sistema.getListaLibros()) {
+                if (libro.getIsbn().equals(isbn)) {
+                    if (libro.getStock() < cantidad) {
+                        JOptionPane.showMessageDialog(
+                            this,
+                            "Error: No hay suficiente stock para el libro con ISBN: " + isbn,
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                        return;
+                    }
+
+                    libro.setStock(libro.getStock() - cantidad);
+                    librosVendidos.put(libro, cantidad);
+                    break;
+                }
+            }
+        }
+
+        Venta nuevaVenta = new Venta(fecha, cliente, factura, librosVendidos);
+        sistema.agregarVenta(nuevaVenta);
+
+        // Limpieza: vaciar el modelo de la lista de ventas
+        modeloVenta.clear();
+        txtCliente.setText("");
+        txtFecha.setText("--/--/----");
+        sistema.setFacturaActual(sistema.getFacturaActual() + 1);
+        this.actualizarNroFactura();
+
+        // Reiniciar el total acumulado
+        lblTotal.setText("Total: $ 0");
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Venta registrada exitosamente con factura #" + factura,
+            "Éxito",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }//GEN-LAST:event_btnRegistrarActionPerformed
     
     public void actualizarLibros() {
         DefaultListModel<String> modelo = new DefaultListModel<>();
-    
-        for (Libro libro : this.sistema.getListaLibros()) {
+        for (Libro libro : sistema.getListaLibros()) {
             String textoGenero = libro.getIsbn() + " - " + libro.getTitulo();
-            librosTemp.add(libro);
-            modelo.addElement(textoGenero); 
+            modelo.addElement(textoGenero);
         }
-        
         lstLibros.setModel(modelo);
     }
     
     public void actualizarNroFactura() {
         this.lblNroFactura.setText("Factura: " + this.sistema.getFacturaActual());
+    }
+    
+    private void actualizarTotal(double monto) {
+        String textoActual = lblTotal.getText(); // Ejemplo: "Total: $ 1500"
+        String[] partes = textoActual.split("\\$");
+        double totalActual = Double.parseDouble(partes[1].trim());
+
+        // Ajustamos el total acumulado
+        double nuevoTotal = totalActual + monto;
+
+        // Actualizamos el texto de lblTotal
+        lblTotal.setText("Total: $ " + String.format("%.2f", nuevoTotal));
     }
     
     /**
