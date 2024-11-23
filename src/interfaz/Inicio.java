@@ -15,7 +15,6 @@ public class Inicio extends javax.swing.JFrame {
 
 
     private AnularVenta anularVenta;
-    private BuscarIsbn buscarIsbn;
     private ConsultaDeLibros consultaDeLibros;
     private ConsultaDeVentas consultaDeVentas;
     private DatosLibro datosLibro;
@@ -33,10 +32,11 @@ public class Inicio extends javax.swing.JFrame {
         sistema = new Libreria();
         
         anularVenta = new AnularVenta(sistema);
-        
-        buscarIsbn = new BuscarIsbn();
+
         consultaDeLibros = new ConsultaDeLibros();
-        consultaDeVentas = new ConsultaDeVentas();
+        
+        consultaDeVentas = new ConsultaDeVentas(sistema);
+        
         datosLibro = new DatosLibro();
         
         registrarAutor = new RegistrarAutor(sistema);
@@ -216,7 +216,6 @@ public class Inicio extends javax.swing.JFrame {
 
     private void ocultarVentanas() {
         anularVenta.setVisible(false);
-        buscarIsbn.setVisible(false);
         consultaDeLibros.setVisible(false);
         consultaDeVentas.setVisible(false);
         datosLibro.setVisible(false);

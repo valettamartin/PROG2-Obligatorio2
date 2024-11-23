@@ -4,6 +4,14 @@
  */
 package interfaz;
 
+import gestiondelibrerias.Libreria;
+import gestiondelibrerias.Libro;
+import gestiondelibrerias.Venta;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author marti
@@ -13,8 +21,28 @@ public class ConsultaDeVentas extends javax.swing.JFrame {
     /**
      * Creates new form ConsultaDeVentas
      */
+    
+    private Libreria sistema;
+    private javax.swing.JInternalFrame buscarIsbnFrame;
+    
     public ConsultaDeVentas() {
         initComponents();
+    }
+    
+    public ConsultaDeVentas(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
+        
+        // Añadir un WindowListener para manejar el cierre de la ventana principal
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent e) {
+            if (buscarIsbnFrame != null && buscarIsbnFrame.isVisible()) {
+                buscarIsbnFrame.dispose(); // Cerrar el JInternalFrame
+            }
+        }
+    });
     }
 
     /**
@@ -52,9 +80,19 @@ public class ConsultaDeVentas extends javax.swing.JFrame {
 
         btnIsbn.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnIsbn.setText("...");
+        btnIsbn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIsbnActionPerformed(evt);
+            }
+        });
 
         btnExportar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnExportar.setText("Exportar");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
 
         btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         btnConsultar.setText("Consultar");
@@ -85,6 +123,9 @@ public class ConsultaDeVentas extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
+        tblDatos.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        tblDatos.setName(""); // NOI18N
+        tblDatos.setPreferredSize(new java.awt.Dimension(450, 400));
         scrDatos.setViewportView(tblDatos);
 
         lblEjemplaresVendidos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -186,8 +227,151 @@ public class ConsultaDeVentas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        // TODO add your handling code here:
+            String isbnBuscado = txtIsbn.getText().trim();
+
+            if (isbnBuscado.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Por favor, ingrese un ISBN para consultar.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            Libro libroBuscado = null;
+
+            // Buscar el libro en la lista del sistema
+            for (Libro libro : sistema.getListaLibros()) {
+                if (libro.getIsbn().equals(isbnBuscado)) {
+                    libroBuscado = libro;
+                    break;
+                }
+            }
+
+            if (libroBuscado == null) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se encontró un libro con el ISBN especificado.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+            // Configurar título del libro
+            lblTituloLibro.setText(libroBuscado.getTitulo());
+
+            // Variables para acumuladores
+            int totalEjemplaresVendidos = 0;
+            double totalRecaudado = 0;
+            double totalGanancia = 0;
+
+            // Limpiar la tabla
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tblDatos.getModel();
+            model.setRowCount(0);
+
+            // Procesar las ventas que incluyen el libro
+            for (Venta venta : sistema.getListaVentas()) {
+                if (venta.getLibros().containsKey(libroBuscado)) {
+                    int cantidad = venta.getLibros().get(libroBuscado);
+                    double precioIndividual = libroBuscado.getPrecioVenta();
+                    double importe = precioIndividual * cantidad;
+
+                    // Añadir datos a la tabla
+                    model.addRow(new Object[]{
+                        venta.getFecha(),
+                        venta.getCliente(),
+                        venta.getFactura(),
+                        cantidad,
+                        String.format("%.2f", precioIndividual),
+                        String.format("%.2f", importe)
+                    });
+
+                    // Actualizar acumuladores
+                    totalEjemplaresVendidos += cantidad;
+                    totalRecaudado += importe;
+                    totalGanancia += (precioIndividual - libroBuscado.getPrecioCosto()) * cantidad;
+                }
+            }
+
+            // Actualizar los valores de los labels
+            lblNumEjemplaresVendidos.setText(String.valueOf(totalEjemplaresVendidos));
+            lblNumTotalRecaudado.setText(String.format("$ %.2f", totalRecaudado));
+            lblNumTotalGanancia.setText(String.format("$ %.2f", totalGanancia));
     }//GEN-LAST:event_btnConsultarActionPerformed
+
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
+        // Ruta del archivo
+       String rutaArchivo = System.getProperty("user.dir") + File.separator + "VENTAS.CSV";
+
+       try (FileWriter writer = new FileWriter(rutaArchivo)) {
+           // Escribir los títulos de las columnas
+           writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe\n");
+
+           // Recorrer las filas de la tabla
+           javax.swing.table.TableModel modeloTabla = tblDatos.getModel();
+           for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+               StringBuilder linea = new StringBuilder();
+               for (int j = 0; j < modeloTabla.getColumnCount(); j++) {
+                   linea.append(modeloTabla.getValueAt(i, j));
+                   if (j < modeloTabla.getColumnCount() - 1) {
+                       linea.append(";");
+                   }
+               }
+               linea.append("\n");
+               writer.write(linea.toString());
+           }
+
+           // Confirmación de éxito
+           JOptionPane.showMessageDialog(
+               this,
+               "Archivo 'VENTAS.CSV' exportado exitosamente en la carpeta del proyecto.",
+               "Éxito",
+               JOptionPane.INFORMATION_MESSAGE
+           );
+       } catch (IOException e) {
+           // Manejo de errores
+           JOptionPane.showMessageDialog(
+               this,
+               "Error al exportar el archivo: " + e.getMessage(),
+               "Error",
+               JOptionPane.ERROR_MESSAGE
+           );
+       }
+    }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void btnIsbnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIsbnActionPerformed
+        // Verificar si la ventana ya está abierta
+        if (buscarIsbnFrame != null && buscarIsbnFrame.isVisible()) {
+            return; // Si ya está abierta, no hacemos nada
+        }
+
+        // Crear un JInternalFrame para contener la ventana BuscarIsbn
+        buscarIsbnFrame = new javax.swing.JInternalFrame("Buscar ISBN", false, true, false, false);
+
+        // Configurar el tamaño y posición del JInternalFrame
+        buscarIsbnFrame.setSize(300, 400);
+        buscarIsbnFrame.setLocation(this.getWidth() - 310, 10); // Posicionar al lado derecho de la ventana principal
+
+        // Crear la instancia del componente BuscarIsbn y pasarle el sistema
+        BuscarIsbn buscarIsbn = new BuscarIsbn(this.sistema);
+        buscarIsbnFrame.add(buscarIsbn.getContentPane());
+        buscarIsbn.actualizarLista(); // Actualizar la lista después de inicializar
+
+        // Asegurarse de que el JInternalFrame sea visible
+        buscarIsbnFrame.setVisible(true);
+
+        // Obtener el JLayeredPane de la ventana principal
+        javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
+
+        // Añadir el JInternalFrame al JLayeredPane con la capa superior
+        layeredPane.add(buscarIsbnFrame, javax.swing.JLayeredPane.PALETTE_LAYER);
+
+        // Revalidar y repintar para mostrar correctamente
+        this.revalidate();
+        this.repaint();
+    }//GEN-LAST:event_btnIsbnActionPerformed
 
     /**
      * @param args the command line arguments

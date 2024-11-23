@@ -4,6 +4,8 @@
  */
 package interfaz;
 
+import gestiondelibrerias.Libreria;
+
 /**
  *
  * @author marti
@@ -13,8 +15,16 @@ public class BuscarIsbn extends javax.swing.JFrame {
     /**
      * Creates new form BuscarIsbn
      */
+    private Libreria sistema;
+    
     public BuscarIsbn() {
         initComponents();
+    }
+    
+    public BuscarIsbn(Libreria sistema) {
+        initComponents();
+        
+        this.sistema = sistema;
     }
 
     /**
@@ -82,6 +92,25 @@ public class BuscarIsbn extends javax.swing.JFrame {
                 new BuscarIsbn().setVisible(true);
             }
         });
+    }
+    
+    public void actualizarLista() {
+        if (sistema == null) {
+            return; // Si el sistema no está inicializado, no hacemos nada
+        }
+
+        // Crear un modelo de lista para almacenar los datos
+        javax.swing.DefaultListModel<String> modelo = new javax.swing.DefaultListModel<>();
+
+        // Recorrer la lista de libros en el sistema
+        for (gestiondelibrerias.Libro libro : sistema.getListaLibros()) {
+            // Formatear cada línea con el formato requerido
+            String linea = libro.getIsbn() + " - " + libro.getTitulo();
+            modelo.addElement(linea);
+        }
+
+        // Asignar el modelo a la lista (jList1)
+        jList1.setModel(modelo);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

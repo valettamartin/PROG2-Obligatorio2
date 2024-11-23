@@ -120,6 +120,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIsbnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnExportar">
       <Properties>
@@ -128,6 +131,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Exportar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExportarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnConsultar">
       <Properties>
@@ -169,6 +175,13 @@
                 <Column editable="true" title="Precio" type="java.lang.String"/>
                 <Column editable="true" title="Importe" type="java.lang.String"/>
               </Table>
+            </Property>
+            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[2147483647, 2147483647]"/>
+            </Property>
+            <Property name="name" type="java.lang.String" value="" noResource="true"/>
+            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+              <Dimension value="[450, 400]"/>
             </Property>
           </Properties>
         </Component>
