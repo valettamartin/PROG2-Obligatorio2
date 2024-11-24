@@ -244,12 +244,17 @@ public class RegistrarEditorial extends javax.swing.JFrame {
     }
     
     private void guardarEditorialEnArchivo(Editorial editorial) {
-    String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "editoriales.txt";
-        File archivo = new File(rutaArchivo);
+        // Ruta relativa para la carpeta y archivo de editoriales
+        String carpetaDatos = System.getProperty("user.dir") + File.separator + "datos";
+        String rutaArchivoEditoriales = carpetaDatos + File.separator + "editoriales.txt";
+        File archivo = new File(rutaArchivoEditoriales);
 
         try {
             // Crear carpeta "datos" si no existe
-            archivo.getParentFile().mkdirs();
+            File carpeta = new File(carpetaDatos);
+            if (!carpeta.exists()) {
+                carpeta.mkdirs();
+            }
 
             // Abrir el archivo en modo de anexado
             FileWriter writer = new FileWriter(archivo, true);

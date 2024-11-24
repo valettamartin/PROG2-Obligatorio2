@@ -216,12 +216,17 @@ public class RegistrarGenero extends javax.swing.JFrame {
     }
     
     private void guardarGeneroEnArchivo(Genero genero) {
-        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "generos.txt";
-        File archivo = new File(rutaArchivo);
+        // Ruta relativa para la carpeta y archivo de géneros
+        String carpetaDatos = System.getProperty("user.dir") + File.separator + "datos";
+        String rutaArchivoGeneros = carpetaDatos + File.separator + "generos.txt";
+        File archivo = new File(rutaArchivoGeneros);
 
         try {
             // Crear carpeta "datos" si no existe
-            archivo.getParentFile().mkdirs();
+            File carpeta = new File(carpetaDatos);
+            if (!carpeta.exists()) {
+                carpeta.mkdirs();
+            }
 
             // Abrir el archivo en modo de anexado
             FileWriter writer = new FileWriter(archivo, true);

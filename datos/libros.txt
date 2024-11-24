@@ -1,5 +1,6 @@
-9780439554930|Harry Potter and the Sorcerer's Stone|Scholastic|Fantasia|J.K. Rowling|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\harrypotter1.jpg|700|990|22
-9780141199078|Pride and Prejudice|Penguin Random House|Romance|Jane Austen|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\prideandprejudice.jpg|300|490|30
-9780553382563|I, Robot|Penguin Random House|Ciencia Ficción|Isaac Asimov|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\irobot.jpg|350|490|28
-9780765326355|The Way of Kings|Tor Books|Fantasia|Brandon Sanderson|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\thewayofkings.jpg|650|990|14
-9781938570391|The Sunlit Man|Dragonsteel Entertainment|Fantasia|Brandon Sanderson|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\thesunlitman.jpg|490|990|24
+9780439554930|Harry Potter and the Sorcerer's Stone|Scholastic|Fantasia|J.K. Rowling|imagenes\harrypotter1.jpg|700|990|20
+9780553382563|I, Robot|Penguin Random House|Ciencia Ficción|Isaac Asimov|imagenes\irobot.jpg|350|490|27
+9780141199078|Pride and Prejudice|Penguin Random House|Romance|Jane Austen|imagenes\prideandprejudice.jpg|300|490|30
+9780143039952|The Odyssey|Penguin Random House|Fantasia|Homero|imagenes\odyssey_1.jpg|350|490|15
+9781938570391|The Sunlit Man|Dragonsteel Entertainment|Fantasia|Brandon Sanderson|imagenes\thesunlitman.jpg|490|990|24
+9780765326355|The Way of Kings|Tor Books|Fantasia|Brandon Sanderson|imagenes\thewayofkings.jpg|650|990|14

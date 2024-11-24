@@ -292,7 +292,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            pathFoto = selectedFile.getAbsolutePath(); // Almacena la ruta
+            pathFoto = selectedFile.getAbsolutePath(); // Almacena la ruta absoluta de la imagen seleccionada
 
             // Limpia el panel
             pnlFoto.removeAll();
@@ -598,11 +598,9 @@ public class RegistrarLibro extends javax.swing.JFrame {
     }
     
     private void guardarLibroEnArchivo(Libro libro) {
-        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "libros.txt";
-        File archivo = new File(rutaArchivo);
-
-        // Agregar el libro a la lista
-        this.sistema.agregarLibro(libro);
+        String rutaDirectorioDatos = System.getProperty("user.dir") + File.separator + "datos";
+        String rutaArchivoLibros = rutaDirectorioDatos + File.separator + "libros.txt";
+        File archivo = new File(rutaArchivoLibros);
 
         // Ordenar la lista antes de guardar
         this.sistema.getListaLibros().sort(null); // Usa el orden natural por título
@@ -614,8 +612,12 @@ public class RegistrarLibro extends javax.swing.JFrame {
             // Reescribir el archivo con los libros ordenados
             FileWriter writer = new FileWriter(archivo, false); // Modo sobrescribir
             for (Libro l : this.sistema.getListaLibros()) {
+                // Guardamos rutas relativas para las fotos, si existen
+                String rutaFotoRelativa = l.getFoto().isEmpty() ? "" :
+                    "imagenes" + File.separator + new File(l.getFoto()).getName();
+
                 writer.write(l.getIsbn() + "|" + l.getTitulo() + "|" + l.getEditorial() + "|" +
-                             l.getGenero() + "|" + l.getAutor() + "|" + l.getFoto() + "|" +
+                             l.getGenero() + "|" + l.getAutor() + "|" + rutaFotoRelativa + "|" +
                              l.getPrecioCosto() + "|" + l.getPrecioVenta() + "|" + l.getStock() + "\n");
             }
             writer.close();

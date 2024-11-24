@@ -163,7 +163,7 @@ public class Libreria {
     
     
     public void cargarDatos() {
-        String directorioDatos = System.getProperty("user.dir") + File.separator + "datos";
+        String directorioDatos = "datos"; // Ruta relativa para los datos
 
         // Crear la carpeta si no existe
         File carpetaDatos = new File(directorioDatos);

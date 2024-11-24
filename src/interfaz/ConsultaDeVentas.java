@@ -302,43 +302,48 @@ public class ConsultaDeVentas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
-        // Ruta del archivo
-       String rutaArchivo = System.getProperty("user.dir") + File.separator + "VENTAS.CSV";
+        // Ruta relativa para el archivo
+        String rutaCarpeta = System.getProperty("user.dir") + File.separator + "exportados";
+        File carpetaExportados = new File(rutaCarpeta);
+        if (!carpetaExportados.exists()) {
+            carpetaExportados.mkdirs(); // Crear carpeta si no existe
+        }
+        String rutaArchivo = rutaCarpeta + File.separator + "VENTAS.CSV";
 
-       try (FileWriter writer = new FileWriter(rutaArchivo)) {
-           // Escribir los títulos de las columnas
-           writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe\n");
+        try (FileWriter writer = new FileWriter(rutaArchivo)) {
+            // Escribir los títulos de las columnas
+            writer.write("Fecha;Cliente;Factura;Cantidad;Precio;Importe\n");
 
-           // Recorrer las filas de la tabla
-           javax.swing.table.TableModel modeloTabla = tblDatos.getModel();
-           for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-               StringBuilder linea = new StringBuilder();
-               for (int j = 0; j < modeloTabla.getColumnCount(); j++) {
-                   linea.append(modeloTabla.getValueAt(i, j));
-                   if (j < modeloTabla.getColumnCount() - 1) {
-                       linea.append(";");
-                   }
-               }
-               linea.append("\n");
-               writer.write(linea.toString());
-           }
+            // Recorrer las filas de la tabla
+            javax.swing.table.TableModel modeloTabla = tblDatos.getModel();
+            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                StringBuilder linea = new StringBuilder();
+                for (int j = 0; j < modeloTabla.getColumnCount(); j++) {
+                    linea.append(modeloTabla.getValueAt(i, j));
+                    if (j < modeloTabla.getColumnCount() - 1) {
+                        linea.append(";");
+                    }
+                }
+                linea.append("\n");
+                writer.write(linea.toString());
+            }
 
-           // Confirmación de éxito
-           JOptionPane.showMessageDialog(
-               this,
-               "Archivo 'VENTAS.CSV' exportado exitosamente en la carpeta del proyecto.",
-               "Éxito",
-               JOptionPane.INFORMATION_MESSAGE
-           );
-       } catch (IOException e) {
-           // Manejo de errores
-           JOptionPane.showMessageDialog(
-               this,
-               "Error al exportar el archivo: " + e.getMessage(),
-               "Error",
-               JOptionPane.ERROR_MESSAGE
-           );
-       }
+            // Confirmación de éxito
+            JOptionPane.showMessageDialog(
+                this,
+                "Archivo 'VENTAS.CSV' exportado exitosamente en la carpeta 'exportados'.",
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (IOException e) {
+            // Manejo de errores
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al exportar el archivo: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }//GEN-LAST:event_btnExportarActionPerformed
 
     private void btnIsbnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIsbnActionPerformed
@@ -369,6 +374,7 @@ public class ConsultaDeVentas extends javax.swing.JFrame {
         layeredPane.add(buscarIsbnFrame, javax.swing.JLayeredPane.PALETTE_LAYER);
 
         // Revalidar y repintar para mostrar correctamente
+        layeredPane.moveToFront(buscarIsbnFrame); // Traer al frente
         this.revalidate();
         this.repaint();
     }//GEN-LAST:event_btnIsbnActionPerformed

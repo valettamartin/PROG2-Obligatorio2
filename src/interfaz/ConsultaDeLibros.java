@@ -153,57 +153,63 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
         String genero = txtGenero.getText().toLowerCase().trim();
         String titulo = txtTitulo.getText().toLowerCase().trim();
         String autor = txtAutor.getText().toLowerCase().trim();
-        ArrayList<Libro> listaResultado = new ArrayList<Libro>();
-        
+        ArrayList<Libro> listaResultado = new ArrayList<>();
+
         for (Libro libro : this.sistema.getListaLibros()) {
-            boolean coincideGenero = genero.isEmpty() || libro.getGenero().toLowerCase().trim().contains(genero);
-            boolean coincideTitulo = titulo.isEmpty() || libro.getTitulo().toLowerCase().trim().contains(titulo);
-            boolean coincideAutor = autor.isEmpty() || libro.getAutor().toLowerCase().trim().contains(autor);
-            
+            boolean coincideGenero = genero.isEmpty() || libro.getGenero().toLowerCase().contains(genero);
+            boolean coincideTitulo = titulo.isEmpty() || libro.getTitulo().toLowerCase().contains(titulo);
+            boolean coincideAutor = autor.isEmpty() || libro.getAutor().toLowerCase().contains(autor);
+
             if (coincideGenero && coincideTitulo && coincideAutor) {
                 listaResultado.add(libro);
             }
         }
-        
-        // Limpiar datos
+
         pnlFotos.removeAll();
+        pnlFotos.setLayout(new GridLayout(0, 4, 10, 10)); // Configura la grilla
+
+        if (listaResultado.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se encontraron libros con los criterios de búsqueda.",
+                "Sin resultados",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        } else {
+            generarImagenes(listaResultado);
+        }
+
         txtGenero.setText("");
         txtTitulo.setText("");
         txtAutor.setText("");
         pnlFotos.revalidate();
         pnlFotos.repaint();
-        
-        this.generarImagenes(listaResultado);
     }
     
     public void generarImagenes(ArrayList<Libro> listaResultado) {
-        // Configurar el layout del panel para mostrar una grilla
-        pnlFotos.setLayout(new GridLayout(0, 4, 10, 10)); // 4 columnas, ajustable
-
         for (Libro libro : listaResultado) {
-            // Crear un botón para cada libro
             JButton nuevo = new JButton();
             nuevo.setHorizontalAlignment(JButton.CENTER);
             nuevo.setVerticalAlignment(JButton.CENTER);
 
-            // Agregar la imagen o el ISBN como texto si no hay imagen o la imagen no es válida
             File archivoImagen = new File(libro.getFoto());
-            if (libro.getFoto() != null && !libro.getFoto().isEmpty() && archivoImagen.exists()) {
-                ImageIcon icon = new ImageIcon(libro.getFoto());
-                Image scaledImage = icon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH); // Ajustar tamaño
-                nuevo.setIcon(new ImageIcon(scaledImage));
-            } else {
+            try {
+                if (libro.getFoto() != null && !libro.getFoto().isEmpty() && archivoImagen.exists()) {
+                    ImageIcon icon = new ImageIcon(libro.getFoto());
+                    Image scaledImage = icon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH);
+                    nuevo.setIcon(new ImageIcon(scaledImage));
+                } else {
+                    nuevo.setText(libro.getIsbn());
+                }
+            } catch (Exception ex) {
                 nuevo.setText(libro.getIsbn());
+                System.err.println("Error al cargar la imagen para el libro: " + libro.getTitulo());
             }
 
-            // Agregar un action listener al botón para abrir la ventana de detalles
             nuevo.addActionListener(new LibroListener(libro));
-
-            // Añadir el botón al panel
             pnlFotos.add(nuevo);
         }
 
-        // Actualizar el panel
         pnlFotos.revalidate();
         pnlFotos.repaint();
     }
