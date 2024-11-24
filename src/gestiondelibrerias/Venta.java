@@ -11,7 +11,7 @@ Santiago Oliveros - 339937
 
 import java.util.HashMap;
 
-public class Venta {
+public class Venta implements Comparable<Venta>{
 
     // Atributos
     private String fecha;
@@ -80,6 +80,12 @@ public class Venta {
     // Método para agregar un libro y su cantidad
     public void agregarLibro(Libro libro, int cantidad) {
         this.libros.put(libro, cantidad);
+    }
+    
+    @Override
+    public int compareTo(Venta otraVenta) {
+        // Orden natural por número de factura en orden decreciente
+        return Integer.compare(otraVenta.getFactura(), this.getFactura());
     }
 }
 

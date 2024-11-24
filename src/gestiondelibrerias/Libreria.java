@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -99,6 +100,8 @@ public class Libreria {
 
     public void agregarVenta(Venta venta) {
         this.listaVentas.add(venta);
+        // Ordenar en orden decreciente por número de factura
+        this.listaVentas.sort(Comparator.comparingInt(Venta::getFactura).reversed());
     }
     // Fin de metodos de agregacion
     

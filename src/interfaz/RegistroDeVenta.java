@@ -10,6 +10,7 @@ import gestiondelibrerias.Venta;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -401,9 +402,12 @@ public class RegistroDeVenta extends javax.swing.JFrame {
 
         // Crear el objeto Venta con el precio de compra incluido
         Venta nuevaVenta = new Venta(fecha, cliente, factura, librosVendidos, (int) precioCompra);
+
+        // Agregar la venta al sistema (solo aquí)
         sistema.agregarVenta(nuevaVenta);
 
-        this.guardarVentaEnArchivo(nuevaVenta);
+        // Guardar la nueva venta en el archivo (sin agregar nuevamente al sistema)
+        guardarVentaEnArchivo();
 
         // Actualizar el stock en el archivo libros.txt
         actualizarStockEnArchivoLibros(librosVendidos);
@@ -426,7 +430,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             JOptionPane.INFORMATION_MESSAGE
         );
 
-        this.actualizarNroFactura(); // Actualizar el número de factura mostrado en la interfaz
+        this.actualizarNroFactura(); 
     }//GEN-LAST:event_btnRegistrarActionPerformed
     
     public void actualizarLibros() {
@@ -505,7 +509,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         lblTotal.setText("Total: $ " + String.format("%.2f", nuevoTotal));
     }
     
-    private void guardarVentaEnArchivo(Venta venta) {
+    private void guardarVentaEnArchivo() {
         String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "ventas.txt";
         File archivo = new File(rutaArchivo);
 
@@ -513,31 +517,37 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             // Crear la carpeta 'datos' si no existe
             archivo.getParentFile().mkdirs();
 
-            // Abrir el archivo en modo de anexado
-            FileWriter writer = new FileWriter(archivo, true);
+            // Ordenar las ventas en orden descendente por número de factura
+            sistema.getListaVentas().sort(Comparator.comparingInt(Venta::getFactura).reversed());
 
-            // Crear una línea que represente la venta
-            StringBuilder lineaVenta = new StringBuilder();
-            lineaVenta.append(venta.getFecha()).append("|");
-            lineaVenta.append(venta.getCliente()).append("|");
-            lineaVenta.append(venta.getFactura()).append("|");
-            lineaVenta.append(venta.getPrecioCompra()).append("|");
+            // Sobrescribir el archivo con todas las ventas ordenadas
+            FileWriter writer = new FileWriter(archivo, false); // Modo sobrescribir
 
-            // Iterar sobre los libros vendidos y añadirlos a la línea
-            for (Libro libro : venta.getLibros().keySet()) {
-                int cantidad = venta.getLibros().get(libro);
-                lineaVenta.append(libro.getIsbn()).append(":").append(cantidad).append(",");
+            for (Venta venta : sistema.getListaVentas()) {
+                // Crear una línea que represente la venta
+                StringBuilder lineaVenta = new StringBuilder();
+                lineaVenta.append(venta.getFecha()).append("|");
+                lineaVenta.append(venta.getCliente()).append("|");
+                lineaVenta.append(venta.getFactura()).append("|");
+                lineaVenta.append(venta.getPrecioCompra()).append("|");
+
+                // Iterar sobre los libros vendidos y añadirlos a la línea
+                for (Libro libro : venta.getLibros().keySet()) {
+                    int cantidad = venta.getLibros().get(libro);
+                    lineaVenta.append(libro.getIsbn()).append(":").append(cantidad).append(",");
+                }
+
+                // Eliminar la última coma
+                if (lineaVenta.charAt(lineaVenta.length() - 1) == ',') {
+                    lineaVenta.deleteCharAt(lineaVenta.length() - 1);
+                }
+
+                lineaVenta.append("\n");
+
+                // Escribir la línea en el archivo
+                writer.write(lineaVenta.toString());
             }
 
-            // Eliminar la última coma
-            if (lineaVenta.charAt(lineaVenta.length() - 1) == ',') {
-                lineaVenta.deleteCharAt(lineaVenta.length() - 1);
-            }
-
-            lineaVenta.append("\n");
-
-            // Escribir la línea en el archivo
-            writer.write(lineaVenta.toString());
             writer.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(
@@ -548,7 +558,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             );
         }
     }
-    
+
     private void actualizarStockEnArchivoLibros(HashMap<Libro, Integer> librosVendidos) {
         String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "libros.txt";
         File archivo = new File(rutaArchivo);
