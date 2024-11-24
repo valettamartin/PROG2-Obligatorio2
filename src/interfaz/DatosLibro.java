@@ -55,8 +55,8 @@ public class DatosLibro extends javax.swing.JFrame {
     private void cargarImagen(String foto, String isbn) {
         pnlFoto.removeAll(); // Limpiar el panel
 
-        if ( foto != null && !(foto.isEmpty()) ) {
-            // Si hay una ruta de imagen válida, cargar la imagen
+        if (foto != null && !foto.isEmpty() && new java.io.File(foto).exists()) {
+            // Si hay una ruta de imagen válida y el archivo existe, cargar la imagen
             ImageIcon icon = new ImageIcon(foto);
             Image scaledImage = icon.getImage().getScaledInstance(pnlFoto.getWidth(), pnlFoto.getHeight(), Image.SCALE_SMOOTH);
             JLabel lblImagen = new JLabel(new ImageIcon(scaledImage));
@@ -65,7 +65,7 @@ public class DatosLibro extends javax.swing.JFrame {
             pnlFoto.setLayout(new BorderLayout());
             pnlFoto.add(lblImagen, BorderLayout.CENTER);
         } else {
-            // Si no hay imagen, mostrar el ISBN
+            // Si no hay imagen o el archivo no existe, mostrar el ISBN
             JLabel lblTexto = new JLabel(isbn);
             lblTexto.setHorizontalAlignment(JLabel.CENTER);
             lblTexto.setVerticalAlignment(JLabel.CENTER);
@@ -78,7 +78,6 @@ public class DatosLibro extends javax.swing.JFrame {
         pnlFoto.revalidate();
         pnlFoto.repaint();
     }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

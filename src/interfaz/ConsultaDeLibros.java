@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -185,8 +186,9 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
             nuevo.setHorizontalAlignment(JButton.CENTER);
             nuevo.setVerticalAlignment(JButton.CENTER);
 
-            // Agregar la imagen o el ISBN como texto si no hay imagen
-            if (libro.getFoto() != null && !libro.getFoto().isEmpty()) {
+            // Agregar la imagen o el ISBN como texto si no hay imagen o la imagen no es válida
+            File archivoImagen = new File(libro.getFoto());
+            if (libro.getFoto() != null && !libro.getFoto().isEmpty() && archivoImagen.exists()) {
                 ImageIcon icon = new ImageIcon(libro.getFoto());
                 Image scaledImage = icon.getImage().getScaledInstance(100, 150, Image.SCALE_SMOOTH); // Ajustar tamaño
                 nuevo.setIcon(new ImageIcon(scaledImage));
