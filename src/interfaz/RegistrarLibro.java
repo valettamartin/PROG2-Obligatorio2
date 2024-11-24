@@ -70,6 +70,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
         txtVenta = new javax.swing.JTextField();
         txtStock = new javax.swing.JTextField();
         btnAgregar = new javax.swing.JButton();
+        btnLimpiarImg = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registrar Libro");
@@ -178,6 +179,14 @@ public class RegistrarLibro extends javax.swing.JFrame {
             }
         });
 
+        btnLimpiarImg.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        btnLimpiarImg.setText("x");
+        btnLimpiarImg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarImgActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,7 +210,10 @@ public class RegistrarLibro extends javax.swing.JFrame {
                             .addComponent(scrAutor, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(18, 26, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnLimpiarImg)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -250,7 +262,9 @@ public class RegistrarLibro extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlFoto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnFoto)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnFoto)
+                            .addComponent(btnLimpiarImg))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblStock)
@@ -491,6 +505,10 @@ public class RegistrarLibro extends javax.swing.JFrame {
         this.cargarAutores(this.lstGenero.getSelectedValue());
     }//GEN-LAST:event_lstGeneroValueChanged
 
+    private void btnLimpiarImgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarImgActionPerformed
+        this.restaurarPnlFoto();
+    }//GEN-LAST:event_btnLimpiarImgActionPerformed
+
     public boolean esNumeroEntero(String texto) {
         try {
             Integer.parseInt(texto);
@@ -638,6 +656,7 @@ public class RegistrarLibro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnFoto;
+    private javax.swing.JButton btnLimpiarImg;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblCosto;
     private javax.swing.JLabel lblEditorial;
