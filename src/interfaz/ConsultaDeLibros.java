@@ -3,6 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package interfaz;
+import gestiondelibrerias.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -10,12 +23,16 @@ package interfaz;
  */
 public class ConsultaDeLibros extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ConsultaDeLibros
-     */
+    private Libreria sistema;
     public ConsultaDeLibros() {
         initComponents();
     }
+    
+    public ConsultaDeLibros(Libreria sistema){
+        initComponents();
+        this.sistema = sistema;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,6 +52,7 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
         btnConsultar = new javax.swing.JButton();
         sepBusqueda = new javax.swing.JSeparator();
         scrBusqueda = new javax.swing.JScrollPane();
+        pnlFotos = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Consulta de Libros");
@@ -61,6 +79,15 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
 
         btnConsultar.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         btnConsultar.setText("Consultar");
+        btnConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarActionPerformed(evt);
+            }
+        });
+
+        pnlFotos.setPreferredSize(new java.awt.Dimension(450, 300));
+        pnlFotos.setLayout(new java.awt.GridLayout());
+        scrBusqueda.setViewportView(pnlFotos);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,8 +135,8 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sepBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 326, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(scrBusqueda, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addGap(14, 14, 14))
         );
 
         pack();
@@ -119,9 +146,122 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtGeneroActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
+        this.consultarLibros();
+    }//GEN-LAST:event_btnConsultarActionPerformed
+
+    public void consultarLibros(){
+        String genero = txtGenero.getText().toLowerCase();
+        String titulo = txtTitulo.getText().toLowerCase();
+        String autor = txtAutor.getText().toLowerCase();
+        ArrayList<Libro> listaResultado = new ArrayList<Libro>();
+        
+        for (Libro libro : this.sistema.getListaLibros()) {
+            boolean coincideGenero = genero.isEmpty() || libro.getGenero().toLowerCase().contains(genero);
+            boolean coincideTitulo = titulo.isEmpty() || libro.getTitulo().toLowerCase().contains(titulo);
+            boolean coincideAutor = autor.isEmpty() || libro.getAutor().toLowerCase().contains(autor);
+            
+            if(genero.isEmpty() && titulo.isEmpty() && autor.isEmpty()){
+                JOptionPane.showMessageDialog(
+                    this,
+                    "No se ha ingresado nada.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+            
+            if (coincideGenero && coincideTitulo && coincideAutor) {
+                listaResultado.add(libro);
+            }
+        }
+        pnlFotos.removeAll();
+        txtGenero.setText("");
+        txtTitulo.setText("");
+        txtAutor.setText("");
+        pnlFotos.revalidate();
+        pnlFotos.repaint();
+        
+        this.generarImagenes(listaResultado);
+    }
+    
+    public void generarImagenes(ArrayList<Libro> librosEncontrados){
+        for(Libro libro : librosEncontrados){
+            String pathFoto = libro.getFoto();
+            ImageIcon icon = new ImageIcon(pathFoto);
+            JButton botonLibro = new JButton();
+            botonLibro.setIcon(icon);
+            botonLibro.addActionListener(new ActionListener(){
+                @Override
+                public void actionPerformed(ActionEvent e){
+                    JFrame detallesLibro = new JFrame();
+                    detallesLibro.setSize(300, 200);
+                    detallesLibro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    
+                    //Creamos el contenido del JFrame
+                    JPanel panel = new JPanel();
+                    panel.setLayout(new GridLayout(4, 2));
+                    JLabel lblTitulo = new JLabel("Título:");
+                    JLabel lblGenero = new JLabel("Género:");
+                    JLabel lblAutor = new JLabel("Autor:");
+                    JLabel lblEditorial = new JLabel("Editorial:");
+                    JLabel lblIsbn = new JLabel("ISBN:");
+                    JLabel lblValorTitulo = new JLabel(libro.getTitulo());
+                    JLabel lblValorGenero = new JLabel(libro.getGenero());
+                    JLabel lblValorAutor = new JLabel(libro.getAutor());
+                    JLabel lblValorEditorial = new JLabel(libro.getEditorial());
+                    JLabel lblValorIsbn = new JLabel(libro.getIsbn());
+                    
+                    //Creamos el panel donde irá la foto del libro
+                    JPanel panelFoto = new JPanel();
+                    panelFoto.setBackground(new java.awt.Color(255, 255, 255));
+                    panelFoto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                    JLabel lblImagen = new JLabel(icon);
+                    panelFoto.add(lblImagen);
+                    
+                    panel.setPreferredSize(new java.awt.Dimension(582, 467));
+
+                    lblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                    lblTitulo.setText("Titulo:");
+
+                    lblIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                    lblIsbn.setText("Isbn:");
+
+                    lblEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                    lblEditorial.setText("Editorial:");
+
+                    lblGenero.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                    lblGenero.setText("Genero:");
+
+                    lblAutor.setFont(new java.awt.Font("Segoe UI", 0, 14));
+                    lblAutor.setText("Autor:");
+
+                    lblValorTitulo.setFont(new java.awt.Font("Segoe UI", 0, 14));
+
+                    lblValorIsbn.setFont(new java.awt.Font("Segoe UI", 0, 14));
+
+                    lblValorEditorial.setFont(new java.awt.Font("Segoe UI", 0, 14));
+
+                    lblValorGenero.setFont(new java.awt.Font("Segoe UI", 0, 14));
+
+                    lblValorAutor.setFont(new java.awt.Font("Segoe UI", 0, 14));
+
+                    panel.add(lblTitulo);
+                    panel.add(lblValorTitulo);
+                    panel.add(lblGenero);
+                    panel.add(lblValorGenero);
+                    panel.add(lblAutor);
+                    panel.add(lblValorAutor);
+                    panel.add(lblEditorial);
+                    panel.add(lblValorEditorial);
+                    panel.add(lblIsbn);
+                    panel.add(lblValorIsbn);
+                    detallesLibro.add(panel);
+                    detallesLibro.setVisible(true);
+                }
+            });
+            pnlFotos.add(botonLibro);
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -159,6 +299,7 @@ public class ConsultaDeLibros extends javax.swing.JFrame {
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblGenero;
     private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlFotos;
     private javax.swing.JScrollPane scrBusqueda;
     private javax.swing.JSeparator sepBusqueda;
     private javax.swing.JTextField txtAutor;
