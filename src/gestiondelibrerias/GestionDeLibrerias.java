@@ -4,14 +4,11 @@
  */
 package gestiondelibrerias;
 import interfaz.Inicio;
-import interfaz.RegistrarEditorial;
-
 /*
 Martín Valetta - 251093
 Santiago Oliveros - 339937
 */
 
-import interfaz.*;
 import javax.swing.JOptionPane;
 
 public class GestionDeLibrerias {

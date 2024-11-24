@@ -313,118 +313,119 @@ public class RegistrarLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTituloActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // Validamos que no se esten utilizando los caracteres utilizados para el trim ni el almacenamiento
-        if (this.txtTitulo.getText().contains(" - ") || 
-            this.txtIsbn.getText().contains(" - ") ||
-            this.txtVenta.getText().contains(" - ") ||
-            this.txtIsbn.getText().contains("|") ||
-            this.txtVenta.getText().contains("|") ||
-            this.txtTitulo.getText().contains("|")) {
-            JOptionPane.showMessageDialog(
-                this,
-                "No se pueden utilizar los siguientes caracteres: ' - ', '|'",
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return; // Salimos de la acción si se detectan caracteres prohibidos
-        }
+    // Validamos que no se esten utilizando caracteres prohibidos
+    if (this.txtTitulo.getText().contains(" - ") || 
+        this.txtIsbn.getText().contains(" - ") ||
+        this.txtVenta.getText().contains(" - ") ||
+        this.txtIsbn.getText().contains("|") ||
+        this.txtVenta.getText().contains("|") ||
+        this.txtTitulo.getText().contains("|")) {
+        JOptionPane.showMessageDialog(
+            this,
+            "No se pueden utilizar los siguientes caracteres: ' - ', '|'",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return; // Salimos de la acción si se detectan caracteres prohibidos
+    }
 
-        if (this.txtTitulo.getText().length() > 0 && 
-            this.txtIsbn.getText().length() > 0 &&
-            this.esNumeroEntero(this.txtCosto.getText()) && 
-            this.esNumeroEntero(this.txtStock.getText()) &&
-            this.esNumeroEntero(this.txtVenta.getText()) &&
-            this.lstAutor.getSelectedIndex() != -1 &&
-            this.lstEditorial.getSelectedIndex() != -1 &&
-            this.lstGenero.getSelectedIndex() != -1) {
-                // Chequeamos que el stock sea valido
-                if (!(Integer.parseInt(this.txtStock.getText()) >= 0)) {
-                    // El stock es menor que 0
-                    JOptionPane.showMessageDialog(
-                        this,
-                        "El stock no puede ser menor que 0.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                    );
-                } else if (this.sistema.libroRepetido(this.txtIsbn.getText().trim())) {
-                    // El isbn esta repetido
-                    JOptionPane.showMessageDialog(
-                        this,
-                        "Ya se ha registrado un libro con este isbn.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                    );
-                } else {
-                    // Todo es valido, ingresamos el nuevo objeto
-                    String editorial = this.lstEditorial.getSelectedValue();
-                    String genero = this.lstGenero.getSelectedValue();
-                    String autor = this.lstAutor.getSelectedValue();
-                    String isbn = this.txtIsbn.getText().trim();
-                    String titulo = this.txtTitulo.getText().trim();
-                    int precioCosto = Integer.parseInt(this.txtCosto.getText());
-                    int precioVenta = Integer.parseInt(this.txtVenta.getText());
-                    int stock = Integer.parseInt(this.txtStock.getText());
-                    
+    if (this.txtTitulo.getText().length() > 0 && 
+        this.txtIsbn.getText().length() > 0 &&
+        this.esNumeroEntero(this.txtCosto.getText()) && 
+        this.esNumeroEntero(this.txtStock.getText()) &&
+        this.esNumeroEntero(this.txtVenta.getText()) &&
+        this.lstAutor.getSelectedIndex() != -1 &&
+        this.lstEditorial.getSelectedIndex() != -1 &&
+        this.lstGenero.getSelectedIndex() != -1) {
+            // Chequeamos que el stock sea valido
+            if (!(Integer.parseInt(this.txtStock.getText()) >= 0)) {
+                // El stock es menor que 0
+                JOptionPane.showMessageDialog(
+                    this,
+                    "El stock no puede ser menor que 0.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else if (this.sistema.libroRepetido(this.txtIsbn.getText().trim())) {
+                // El isbn esta repetido
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Ya se ha registrado un libro con este isbn.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            } else {
+                // Todo es valido, ingresamos el nuevo objeto
+                String editorial = this.lstEditorial.getSelectedValue();
+                String genero = this.lstGenero.getSelectedValue();
+                String autor = this.lstAutor.getSelectedValue();
+                String isbn = this.txtIsbn.getText().trim();
+                String titulo = this.txtTitulo.getText().trim();
+                int precioCosto = Integer.parseInt(this.txtCosto.getText());
+                int precioVenta = Integer.parseInt(this.txtVenta.getText());
+                int stock = Integer.parseInt(this.txtStock.getText());
+                
                                             
-                    String foto = "";
-                    
-                    if (pathFoto != null && !pathFoto.isEmpty()) {
-                        // Verificamos si existe la carpeta imagenes, y si no, la creamos
-                        String directorioActual = System.getProperty("user.dir");
-                        String carpetaImagenesPath = directorioActual + File.separator + "imagenes";
-                        File carpetaImagenes = new File(carpetaImagenesPath);
-                        if (!carpetaImagenes.exists()) {
-                            carpetaImagenes.mkdir();
-                        }
-
-                        // Añadimos la imagen seleccionada a la carpeta con un nombre único
-                        File archivoOrigen = new File(pathFoto);
-                        String nombreArchivo = archivoOrigen.getName();
-                        String nombreSinExtension = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("."));
-                        String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
-                        File archivoDestino = new File(carpetaImagenesPath + File.separator + nombreArchivo);
-
-                        int contador = 1;
-                        while (archivoDestino.exists()) {
-                            // Generamos un nuevo nombre único añadiendo un contador
-                            String nuevoNombre = nombreSinExtension + "_" + contador + extension;
-                            archivoDestino = new File(carpetaImagenesPath + File.separator + nuevoNombre);
-                            contador++;
-                        }
-
-                        try {
-                            // Copiar el archivo
-                            Files.copy(archivoOrigen.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                            foto = archivoDestino.getAbsolutePath(); // Guardamos la ruta final
-                        } catch (IOException e) {
-                            JOptionPane.showMessageDialog(
-                                this,
-                                "Error al copiar la imagen.",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE
-                            );
-                        }
+                String foto = "";
+                
+                if (pathFoto != null && !pathFoto.isEmpty()) {
+                    // Verificamos si existe la carpeta imagenes, y si no, la creamos
+                    String directorioActual = System.getProperty("user.dir");
+                    String carpetaImagenesPath = directorioActual + File.separator + "imagenes";
+                    File carpetaImagenes = new File(carpetaImagenesPath);
+                    if (!carpetaImagenes.exists()) {
+                        carpetaImagenes.mkdir();
                     }
-                    
-                    // Creamos el nuevo libro
-                    Libro libroNuevo = new Libro(editorial, genero, autor, isbn, titulo, foto, precioCosto, precioVenta, stock);
-                    this.sistema.agregarLibro(libroNuevo);
-                    
-                    this.guardarLibroEnArchivo(libroNuevo);
-                    
-                    // Limpiamos las selecciones
-                    this.txtCosto.setText("");
-                    this.txtVenta.setText("");
-                    this.txtIsbn.setText("");
-                    this.txtStock.setText("");
-                    this.txtTitulo.setText("");
-                    this.lstAutor.clearSelection();
-                    this.lstEditorial.clearSelection();
-                    this.lstGenero.clearSelection();
-                    
-                    this.restaurarPnlFoto();
+
+                    // Añadimos la imagen seleccionada a la carpeta con un nombre único
+                    File archivoOrigen = new File(pathFoto);
+                    String nombreArchivo = archivoOrigen.getName();
+                    String nombreSinExtension = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("."));
+                    String extension = nombreArchivo.substring(nombreArchivo.lastIndexOf("."));
+                    File archivoDestino = new File(carpetaImagenesPath + File.separator + nombreArchivo);
+
+                    int contador = 1;
+                    while (archivoDestino.exists()) {
+                        // Generamos un nuevo nombre único añadiendo un contador
+                        String nuevoNombre = nombreSinExtension + "_" + contador + extension;
+                        archivoDestino = new File(carpetaImagenesPath + File.separator + nuevoNombre);
+                        contador++;
+                    }
+
+                    try {
+                        // Copiar el archivo
+                        Files.copy(archivoOrigen.toPath(), archivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        foto = archivoDestino.getAbsolutePath(); // Guardamos la ruta final
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(
+                            this,
+                            "Error al copiar la imagen.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE
+                        );
+                    }
                 }
-        } else {
+                
+                // Creamos el nuevo libro
+                Libro libroNuevo = new Libro(editorial, genero, autor, isbn, titulo, foto, precioCosto, precioVenta, stock);
+                this.sistema.agregarLibro(libroNuevo);
+                
+                this.guardarLibroEnArchivo(libroNuevo);
+                
+                // Limpiamos las selecciones
+                this.txtCosto.setText("");
+                this.txtVenta.setText("");
+                this.txtIsbn.setText("");
+                this.txtStock.setText("");
+                this.txtTitulo.setText("");
+                this.lstAutor.clearSelection();
+                this.lstEditorial.clearSelection();
+                this.lstGenero.clearSelection();
+                
+                this.restaurarPnlFoto();
+                this.pathFoto = ""; // Reiniciar el path de la foto
+            }
+    } else {
             // Catcheamos errores posibles
             if (!(this.txtTitulo.getText().length() > 0)) {
                 JOptionPane.showMessageDialog(
@@ -573,6 +574,9 @@ public class RegistrarLibro extends javax.swing.JFrame {
         // Actualizar la vista
         pnlFoto.revalidate();
         pnlFoto.repaint();
+
+        // Reiniciar el path de la foto
+        pathFoto = "";
     }
     
     private void guardarLibroEnArchivo(Libro libro) {

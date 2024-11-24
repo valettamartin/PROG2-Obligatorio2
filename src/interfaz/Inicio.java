@@ -13,11 +13,9 @@ import gestiondelibrerias.*;
 
 public class Inicio extends javax.swing.JFrame {
 
-
     private AnularVenta anularVenta;
     private ConsultaDeLibros consultaDeLibros;
     private ConsultaDeVentas consultaDeVentas;
-    private DatosLibro datosLibro;
     private RegistrarAutor registrarAutor;
     private RegistrarEditorial registrarEditorial;
     private RegistrarGenero registrarGenero;
@@ -37,11 +35,9 @@ public class Inicio extends javax.swing.JFrame {
         
         anularVenta = new AnularVenta(sistema);
 
-        consultaDeLibros = new ConsultaDeLibros();
+        consultaDeLibros = new ConsultaDeLibros(sistema);
         
         consultaDeVentas = new ConsultaDeVentas(sistema);
-        
-        datosLibro = new DatosLibro();
         
         registrarAutor = new RegistrarAutor(sistema);
         registrarAutor.actualizarLista();
@@ -223,7 +219,6 @@ public class Inicio extends javax.swing.JFrame {
         anularVenta.setVisible(false);
         consultaDeLibros.setVisible(false);
         consultaDeVentas.setVisible(false);
-        datosLibro.setVisible(false);
         registrarAutor.setVisible(false);
         registrarEditorial.setVisible(false);
         registrarGenero.setVisible(false);

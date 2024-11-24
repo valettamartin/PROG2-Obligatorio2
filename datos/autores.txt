@@ -18,3 +18,4 @@ H.G. Wells|Reino Unido|Ciencia Ficción
 Charlotte Brontë|Reino Unido|Romance
 Emily Brontë|Reino Unido|Romance
 Margaret Atwood|Canadá|Fantasia
+Brandon Sanderson|Estados Unidos|Fantasia

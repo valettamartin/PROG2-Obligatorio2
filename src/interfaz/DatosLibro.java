@@ -4,6 +4,13 @@
  */
 package interfaz;
 
+import gestiondelibrerias.Libro;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 /**
  *
  * @author marti
@@ -17,6 +24,61 @@ public class DatosLibro extends javax.swing.JFrame {
         initComponents();
     }
 
+    public DatosLibro(Libro libro) {
+        initComponents();
+
+        // Asignar propiedades del libro a los campos
+        txtEditorial.setText(libro.getEditorial());
+        txtGenero.setText(libro.getGenero());
+        txtAutor.setText(libro.getAutor());
+        txtIsbn.setText(libro.getIsbn());
+        txtTitulo.setText(libro.getTitulo());
+        txtCosto.setText(String.valueOf(libro.getPrecioCosto()));
+        txtVenta.setText(String.valueOf(libro.getPrecioVenta()));
+        txtStock.setText(String.valueOf(libro.getStock()));
+
+        // Deshabilitar todos los campos de texto
+        txtEditorial.setEditable(false);
+        txtGenero.setEditable(false);
+        txtAutor.setEditable(false);
+        txtIsbn.setEditable(false);
+        txtTitulo.setEditable(false);
+        txtCosto.setEditable(false);
+        txtVenta.setEditable(false);
+        txtStock.setEditable(false);
+
+        // Cargar la imagen o mostrar el ISBN
+        this.cargarImagen(libro.getFoto(), libro.getIsbn());
+    }
+
+    // Método para cargar la imagen o mostrar el ISBN si no hay imagen
+    private void cargarImagen(String foto, String isbn) {
+        pnlFoto.removeAll(); // Limpiar el panel
+
+        if ( foto != null && !(foto.isEmpty()) ) {
+            // Si hay una ruta de imagen válida, cargar la imagen
+            ImageIcon icon = new ImageIcon(foto);
+            Image scaledImage = icon.getImage().getScaledInstance(pnlFoto.getWidth(), pnlFoto.getHeight(), Image.SCALE_SMOOTH);
+            JLabel lblImagen = new JLabel(new ImageIcon(scaledImage));
+            lblImagen.setHorizontalAlignment(JLabel.CENTER);
+            lblImagen.setVerticalAlignment(JLabel.CENTER);
+            pnlFoto.setLayout(new BorderLayout());
+            pnlFoto.add(lblImagen, BorderLayout.CENTER);
+        } else {
+            // Si no hay imagen, mostrar el ISBN
+            JLabel lblTexto = new JLabel(isbn);
+            lblTexto.setHorizontalAlignment(JLabel.CENTER);
+            lblTexto.setVerticalAlignment(JLabel.CENTER);
+            lblTexto.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            pnlFoto.setLayout(new BorderLayout());
+            pnlFoto.add(lblTexto, BorderLayout.CENTER);
+        }
+
+        // Actualizar el panel
+        pnlFoto.revalidate();
+        pnlFoto.repaint();
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,7 +120,7 @@ public class DatosLibro extends javax.swing.JFrame {
         pnlFoto.setLayout(pnlFotoLayout);
         pnlFotoLayout.setHorizontalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 135, Short.MAX_VALUE)
+            .addGap(0, 112, Short.MAX_VALUE)
         );
         pnlFotoLayout.setVerticalGroup(
             pnlFotoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,10 +276,11 @@ public class DatosLibro extends javax.swing.JFrame {
                             .addComponent(lblAutor)))
                     .addComponent(pnlFoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCosto)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblStock)
-                    .addComponent(lblVenta))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblCosto)
+                        .addComponent(lblVenta)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
