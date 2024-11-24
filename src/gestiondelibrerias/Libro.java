@@ -9,7 +9,7 @@ Martín Valetta - 251093
 Santiago Oliveros - 339937
 */
 
-public class Libro {
+public class Libro implements Comparable<Libro> {
 
     // Atributos
     private String editorial;
@@ -112,6 +112,11 @@ public class Libro {
         this.stock = stock;
     }
     // Fin de Getters y Setters
+    
+    @Override
+    public int compareTo(Libro otroLibro) {
+        return this.titulo.compareToIgnoreCase(otroLibro.getTitulo());
+    }
     
 }
 

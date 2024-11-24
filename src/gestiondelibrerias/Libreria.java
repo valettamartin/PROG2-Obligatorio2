@@ -94,6 +94,7 @@ public class Libreria {
 
     public void agregarLibro(Libro libro) {
         this.listaLibros.add(libro);
+        this.listaLibros.sort(null);
     }
 
     public void agregarVenta(Venta venta) {

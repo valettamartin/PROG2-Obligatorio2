@@ -601,15 +601,23 @@ public class RegistrarLibro extends javax.swing.JFrame {
         String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "libros.txt";
         File archivo = new File(rutaArchivo);
 
+        // Agregar el libro a la lista
+        this.sistema.agregarLibro(libro);
+
+        // Ordenar la lista antes de guardar
+        this.sistema.getListaLibros().sort(null); // Usa el orden natural por título
+
         try {
             // Crear la carpeta 'datos' si no existe
             archivo.getParentFile().mkdirs();
 
-            // Abrir el archivo en modo de anexado
-            FileWriter writer = new FileWriter(archivo, true);
-            writer.write(libro.getIsbn() + "|" + libro.getTitulo() + "|" + libro.getEditorial() + "|" +
-                         libro.getGenero() + "|" + libro.getAutor() + "|" + libro.getFoto() + "|" +
-                         libro.getPrecioCosto() + "|" + libro.getPrecioVenta() + "|" + libro.getStock() + "\n");
+            // Reescribir el archivo con los libros ordenados
+            FileWriter writer = new FileWriter(archivo, false); // Modo sobrescribir
+            for (Libro l : this.sistema.getListaLibros()) {
+                writer.write(l.getIsbn() + "|" + l.getTitulo() + "|" + l.getEditorial() + "|" +
+                             l.getGenero() + "|" + l.getAutor() + "|" + l.getFoto() + "|" +
+                             l.getPrecioCosto() + "|" + l.getPrecioVenta() + "|" + l.getStock() + "\n");
+            }
             writer.close();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(
