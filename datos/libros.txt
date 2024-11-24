@@ -1,0 +1,3 @@
+9780439554930|Harry Potter and the Sorcerer's Stone|Scholastic|Fantasia|J.K. Rowling|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\harrypotter1.jpg|700|990|25
+9780141199078|Pride and Prejudice|Penguin Random House|Romance|Jane Austen|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\prideandprejudice.jpg|300|490|33
+9780553382563|I, Robot|Penguin Random House|Ciencia Ficción|Isaac Asimov|C:\Users\marti\OneDrive\Documentos\NetBeansProjects\PROG2\GestionDeLibrerias\imagenes\irobot.jpg|350|490|30

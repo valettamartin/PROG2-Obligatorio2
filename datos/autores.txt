@@ -1,0 +1,20 @@
+J.K. Rowling|Reino Unido|Fantasia
+Stephen King|Estados Unidos|Terror
+George R.R. Martin|Estados Unidos|Fantasia
+J.R.R. Tolkien|Sudáfrica|Fantasia
+Agatha Christie|Reino Unido|Misterio
+Arthur Conan Doyle|Reino Unido|Misterio
+Isaac Asimov|Rusia|Ciencia Ficción
+Philip K. Dick|Estados Unidos|Ciencia Ficción
+H.P. Lovecraft|Estados Unidos|Terror
+Jane Austen|Reino Unido|Romance
+Nicholas Sparks|Estados Unidos|Romance
+Suzanne Collins|Estados Unidos|Fantasia
+Veronica Roth|Estados Unidos|Fantasia
+Dan Brown|Estados Unidos|Misterio
+Mary Shelley|Reino Unido|Terror
+Jules Verne|Francia|Ciencia Ficción
+H.G. Wells|Reino Unido|Ciencia Ficción
+Charlotte Brontë|Reino Unido|Romance
+Emily Brontë|Reino Unido|Romance
+Margaret Atwood|Canadá|Fantasia

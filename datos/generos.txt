@@ -1,0 +1,10 @@
+Fantasia|Narrativa basada en elementos mágicos, sobrenaturales o mitológicos.
+Ciencia Ficción|Historias basadas en avances científicos o tecnológicos imaginarios.
+Romance|Historias centradas en relaciones amorosas.
+Misterio|Relatos que giran en torno a un enigma o crimen por resolver.
+Terror|Narrativas diseñadas para provocar miedo o inquietud.
+Aventura|Historias con eventos emocionantes y riesgosos.
+Historia|Ficción ambientada en un contexto histórico real.
+Ficción Contemporánea|Relatos situados en el mundo moderno.
+Juvenil|Literatura dirigida principalmente a adolescentes.
+Drama|Narraciones enfocadas en conflictos emocionales profundos.

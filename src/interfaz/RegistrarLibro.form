@@ -36,14 +36,14 @@
                           <Component id="lblTitulo" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="scrGenero" alignment="0" max="32767" attributes="0"/>
-                          <Component id="scrEditorial" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtIsbn" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="scrGenero" alignment="0" pref="254" max="32767" attributes="0"/>
+                          <Component id="scrEditorial" alignment="0" pref="0" max="32767" attributes="0"/>
                           <Component id="txtTitulo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="scrAutor" max="32767" attributes="0"/>
+                          <Component id="txtIsbn" alignment="0" max="32767" attributes="0"/>
+                          <Component id="scrAutor" pref="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" pref="26" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="btnFoto" min="-2" pref="112" max="-2" attributes="0"/>
                           <Component id="pnlFoto" min="-2" max="-2" attributes="0"/>

@@ -9,6 +9,9 @@ package interfaz;
  * @author marti
  */
 import gestiondelibrerias.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -167,6 +170,17 @@ public class RegistrarEditorial extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPaisActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+            // Validar que los campos no contengan el carácter '|'
+        if (this.txtNombre.getText().contains("|") || this.txtPais.getText().contains("|")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se puede utilizar el carácter '|'.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return; // Salimos del método para evitar el registro
+        }
+        
         if (this.txtNombre.getText().length() > 0 && this.txtPais.getText().length() > 0) {
             // Sabemos que las dos casillas fueron ingresadas
             if (this.sistema.editorialRepetida(this.txtNombre.getText())) {
@@ -184,6 +198,8 @@ public class RegistrarEditorial extends javax.swing.JFrame {
                 
                 Editorial editorial = new Editorial(nombre, pais);
                 this.sistema.agregarEditorial(editorial);
+                
+                this.guardarEditorialEnArchivo(editorial);
                 
                 this.actualizarTabla();
                 
@@ -225,6 +241,28 @@ public class RegistrarEditorial extends javax.swing.JFrame {
         // Forzar redibujado de la tabla
         tblDatos.setModel(modelo);
         tblDatos.repaint();
+    }
+    
+    private void guardarEditorialEnArchivo(Editorial editorial) {
+    String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "editoriales.txt";
+        File archivo = new File(rutaArchivo);
+
+        try {
+            // Crear carpeta "datos" si no existe
+            archivo.getParentFile().mkdirs();
+
+            // Abrir el archivo en modo de anexado
+            FileWriter writer = new FileWriter(archivo, true);
+            writer.write(editorial.getNombre() + "|" + editorial.getPais() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al guardar la editorial en el archivo: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     /**

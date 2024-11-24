@@ -28,8 +28,12 @@ public class Inicio extends javax.swing.JFrame {
     
     public Inicio() {
         initComponents();
+    }
+    
+    public Inicio(Libreria sistema) {
+        initComponents();
         
-        sistema = new Libreria();
+        this.sistema = sistema;
         
         anularVenta = new AnularVenta(sistema);
 
@@ -162,6 +166,7 @@ public class Inicio extends javax.swing.JFrame {
     private void itmRegistrarEditorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itmRegistrarEditorialActionPerformed
         this.ocultarVentanas();
         
+        registrarEditorial.actualizarTabla();
         registrarEditorial.setVisible(true);
     }//GEN-LAST:event_itmRegistrarEditorialActionPerformed
 

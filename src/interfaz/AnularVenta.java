@@ -8,6 +8,10 @@ import gestiondelibrerias.Genero;
 import gestiondelibrerias.Libreria;
 import gestiondelibrerias.Libro;
 import gestiondelibrerias.Venta;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -303,10 +307,16 @@ public class AnularVenta extends javax.swing.JFrame {
                     libro.setStock(libro.getStock() + cantidadVendida);
                 }
 
+                // Eliminar la línea correspondiente del archivo ventas.txt
+                eliminarVentaDelArchivo(ventaAnulada.getFactura());
+
+                // Actualizar el stock en el archivo libros.txt
+                actualizarStockEnArchivoLibros(ventaAnulada);
+
                 // Damos un aviso por JOptionPane de que se tuvo éxito
                 JOptionPane.showMessageDialog(
                     this,
-                    "La factura ha sido anulada correctamente y el stock ha sido restaurado.",
+                    "La factura ha sido anulada correctamente, el stock ha sido restaurado y la venta eliminada del archivo.",
                     "Éxito",
                     JOptionPane.INFORMATION_MESSAGE
                 );
@@ -338,6 +348,122 @@ public class AnularVenta extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnConfirmarAnulacionActionPerformed
 
+    private void eliminarVentaDelArchivo(int factura) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "ventas.txt";
+        File archivo = new File(rutaArchivo);
+        File archivoTemporal = new File(rutaArchivo + ".tmp");
+
+        try {
+            // Leer el archivo original y escribir uno nuevo sin la venta anulada
+            Scanner scanner = new Scanner(archivo);
+            FileWriter writer = new FileWriter(archivoTemporal);
+
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] partes = linea.split("\\|");
+                int numeroFactura = Integer.parseInt(partes[2]); // La factura está en la tercera posición
+
+                if (numeroFactura != factura) {
+                    writer.write(linea + System.lineSeparator());
+                }
+            }
+
+            scanner.close();
+            writer.close();
+
+            // Reemplazar el archivo original con el archivo temporal
+            if (archivo.delete()) {
+                archivoTemporal.renameTo(archivo);
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Error al eliminar la línea del archivo. No se pudo actualizar el archivo ventas.txt.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al acceder al archivo ventas.txt: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al leer el número de factura en el archivo: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+    
+    private void actualizarStockEnArchivoLibros(Venta ventaAnulada) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "libros.txt";
+        File archivo = new File(rutaArchivo);
+        File archivoTemporal = new File(rutaArchivo + ".tmp");
+
+        try {
+            // Leer el archivo original y escribir uno nuevo con el stock actualizado
+            Scanner scanner = new Scanner(archivo);
+            FileWriter writer = new FileWriter(archivoTemporal);
+
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] partes = linea.split("\\|");
+                String isbn = partes[0]; // El ISBN está en la primera posición
+
+                boolean actualizado = false;
+                for (Libro libro : ventaAnulada.getLibros().keySet()) {
+                    if (libro.getIsbn().equals(isbn)) {
+                        // Actualizamos el stock del libro
+                        partes[8] = String.valueOf(libro.getStock()); // El stock está en la posición 8
+                        actualizado = true;
+                        break;
+                    }
+                }
+
+                if (actualizado) {
+                    // Reescribimos la línea actualizada
+                    writer.write(String.join("|", partes) + System.lineSeparator());
+                } else {
+                    // Copiamos la línea tal cual si no se actualizó
+                    writer.write(linea + System.lineSeparator());
+                }
+            }
+
+            scanner.close();
+            writer.close();
+
+            // Reemplazar el archivo original con el archivo temporal
+            if (archivo.delete()) {
+                archivoTemporal.renameTo(archivo);
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Error al actualizar el archivo libros.txt.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al acceder al archivo libros.txt: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al leer o procesar el archivo libros.txt: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

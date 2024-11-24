@@ -7,6 +7,9 @@ package interfaz;
 import gestiondelibrerias.Libreria;
 import gestiondelibrerias.Libro;
 import gestiondelibrerias.Venta;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -224,6 +227,16 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             );
             return;
         }
+        
+        if (this.txtCliente.getText().contains("|") || this.txtFecha.getText().contains("|")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se puede utilizar el caracter '|'.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
 
         String[] separado = libroSeleccionado.split(" - ");
         String isbnSeleccionado = separado[0];
@@ -328,7 +341,6 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         String[] separado = libroSeleccionado.split(" - ");
         int cantidad = Integer.parseInt(separado[0]); // La cantidad es el primer valor
         double precioVenta = Double.parseDouble(separado[2]); // El precio está en la tercera posición
-        String isbnSeleccionado = separado[3]; // El ISBN está al final
 
         DefaultListModel<String> modeloVenta = (DefaultListModel<String>) lstVenta.getModel();
 
@@ -354,7 +366,7 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         if (fecha.isEmpty()) fecha = "";
         if (cliente.isEmpty()) cliente = "";
 
-        int factura = sistema.getFacturaActual();
+        int factura = leerNumeroFactura(); // Obtener el número de factura desde el archivo
         HashMap<Libro, Integer> librosVendidos = new HashMap<>();
         double precioCompra = 0; // Variable para acumular el total de la venta
 
@@ -391,12 +403,18 @@ public class RegistroDeVenta extends javax.swing.JFrame {
         Venta nuevaVenta = new Venta(fecha, cliente, factura, librosVendidos, (int) precioCompra);
         sistema.agregarVenta(nuevaVenta);
 
+        this.guardarVentaEnArchivo(nuevaVenta);
+
+        // Actualizar el stock en el archivo libros.txt
+        actualizarStockEnArchivoLibros(librosVendidos);
+
+        // Incrementar el número de factura y guardar en el archivo
+        guardarNumeroFactura(factura + 1);
+
         // Limpieza: vaciar el modelo de la lista de ventas
         modeloVenta.clear();
         txtCliente.setText("");
         txtFecha.setText("--/--/----");
-        sistema.setFacturaActual(sistema.getFacturaActual() + 1);
-        this.actualizarNroFactura();
 
         // Reiniciar el total acumulado
         lblTotal.setText("Total: $ 0");
@@ -407,6 +425,8 @@ public class RegistroDeVenta extends javax.swing.JFrame {
             "Éxito",
             JOptionPane.INFORMATION_MESSAGE
         );
+
+        this.actualizarNroFactura(); // Actualizar el número de factura mostrado en la interfaz
     }//GEN-LAST:event_btnRegistrarActionPerformed
     
     public void actualizarLibros() {
@@ -419,7 +439,58 @@ public class RegistroDeVenta extends javax.swing.JFrame {
     }
     
     public void actualizarNroFactura() {
-        this.lblNroFactura.setText("Factura: " + this.sistema.getFacturaActual());
+        int factura = leerNumeroFactura(); // Leer el número de factura desde el archivo
+        this.lblNroFactura.setText("Factura: " + factura);
+    }
+    
+    private int leerNumeroFactura() {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "nrofactura.txt";
+        File archivo = new File(rutaArchivo);
+
+        try {
+            if (!archivo.exists()) {
+                // Si no existe el archivo, lo creamos con el valor inicial 1
+                archivo.getParentFile().mkdirs();
+                FileWriter writer = new FileWriter(archivo);
+                writer.write("1");
+                writer.close();
+                return 1; // Retornar el número inicial
+            }
+
+            // Leer el contenido del archivo
+            java.util.Scanner scanner = new java.util.Scanner(archivo);
+            int factura = scanner.nextInt(); // Leer el número
+            scanner.close();
+            return factura;
+
+        } catch (IOException | NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al leer el número de factura: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return 1; // Retornar 1 como valor predeterminado en caso de error
+        }
+    }
+    
+    private void guardarNumeroFactura(int factura) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "nrofactura.txt";
+        File archivo = new File(rutaArchivo);
+
+        try {
+            // Escribir el número en el archivo
+            FileWriter writer = new FileWriter(archivo);
+            writer.write(String.valueOf(factura));
+            writer.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al guardar el número de factura: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     private void actualizarTotal(double monto) {
@@ -432,6 +503,117 @@ public class RegistroDeVenta extends javax.swing.JFrame {
 
         // Actualizamos el texto de lblTotal
         lblTotal.setText("Total: $ " + String.format("%.2f", nuevoTotal));
+    }
+    
+    private void guardarVentaEnArchivo(Venta venta) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "ventas.txt";
+        File archivo = new File(rutaArchivo);
+
+        try {
+            // Crear la carpeta 'datos' si no existe
+            archivo.getParentFile().mkdirs();
+
+            // Abrir el archivo en modo de anexado
+            FileWriter writer = new FileWriter(archivo, true);
+
+            // Crear una línea que represente la venta
+            StringBuilder lineaVenta = new StringBuilder();
+            lineaVenta.append(venta.getFecha()).append("|");
+            lineaVenta.append(venta.getCliente()).append("|");
+            lineaVenta.append(venta.getFactura()).append("|");
+            lineaVenta.append(venta.getPrecioCompra()).append("|");
+
+            // Iterar sobre los libros vendidos y añadirlos a la línea
+            for (Libro libro : venta.getLibros().keySet()) {
+                int cantidad = venta.getLibros().get(libro);
+                lineaVenta.append(libro.getIsbn()).append(":").append(cantidad).append(",");
+            }
+
+            // Eliminar la última coma
+            if (lineaVenta.charAt(lineaVenta.length() - 1) == ',') {
+                lineaVenta.deleteCharAt(lineaVenta.length() - 1);
+            }
+
+            lineaVenta.append("\n");
+
+            // Escribir la línea en el archivo
+            writer.write(lineaVenta.toString());
+            writer.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al guardar la venta en el archivo: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+    
+    private void actualizarStockEnArchivoLibros(HashMap<Libro, Integer> librosVendidos) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "libros.txt";
+        File archivo = new File(rutaArchivo);
+        File archivoTemporal = new File(rutaArchivo + ".tmp");
+
+        try {
+            // Leer el archivo original y escribir uno nuevo con el stock actualizado
+            java.util.Scanner scanner = new java.util.Scanner(archivo);
+            FileWriter writer = new FileWriter(archivoTemporal);
+
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] partes = linea.split("\\|");
+                String isbn = partes[0]; // El ISBN está en la primera posición
+
+                boolean actualizado = false;
+                for (Libro libro : librosVendidos.keySet()) {
+                    if (libro.getIsbn().equals(isbn)) {
+                        // Restamos el stock vendido
+                        int stockActual = Integer.parseInt(partes[8]); // El stock está en la posición 8
+                        int stockVendido = librosVendidos.get(libro);
+                        partes[8] = String.valueOf(stockActual - stockVendido); // Actualizamos el stock
+                        actualizado = true;
+                        break;
+                    }
+                }
+
+                if (actualizado) {
+                    // Reescribimos la línea actualizada
+                    writer.write(String.join("|", partes) + System.lineSeparator());
+                } else {
+                    // Copiamos la línea tal cual si no se actualizó
+                    writer.write(linea + System.lineSeparator());
+                }
+            }
+
+            scanner.close();
+            writer.close();
+
+            // Reemplazar el archivo original con el archivo temporal
+            if (archivo.delete()) {
+                archivoTemporal.renameTo(archivo);
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Error al actualizar el archivo libros.txt.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al acceder al archivo libros.txt: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al leer o procesar el archivo libros.txt: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     /**

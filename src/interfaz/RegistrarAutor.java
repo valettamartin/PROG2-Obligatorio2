@@ -10,6 +10,9 @@ package interfaz;
  */
 
 import gestiondelibrerias.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -158,6 +161,16 @@ public class RegistrarAutor extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNacionalidadActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (this.txtNombre.getText().contains("|") || this.txtNacionalidad.getText().contains("|")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se puede utilizar el carácter '|'.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return; // Salimos del método para evitar el registro
+        }
+
         if (this.txtNombre.getText().length() > 0 && this.txtNacionalidad.getText().length() > 0 && this.lstGeneros.getSelectedIndex() != -1) {
             // Aqui sabemos que todas las opciones han sindo ingresadas        
             if (sistema.autorRepetido(this.txtNombre.getText())) {
@@ -177,6 +190,8 @@ public class RegistrarAutor extends javax.swing.JFrame {
                 
                 Autor nuevoAutor = new Autor(nombre, nacionalidad, generos);
                 this.sistema.agregarAutor(nuevoAutor);
+                
+                this.guardarAutorEnArchivo(nuevoAutor);
                 
                 this.actualizarLista();
                 
@@ -245,6 +260,28 @@ public class RegistrarAutor extends javax.swing.JFrame {
         lstGeneros.setModel(modelo);
     }
    
+    private void guardarAutorEnArchivo(Autor autor) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "autores.txt";
+        File archivo = new File(rutaArchivo);
+
+        try {
+            // Crear carpeta "datos" si no existe
+            archivo.getParentFile().mkdirs();
+
+            // Abrir el archivo en modo de anexado
+            FileWriter writer = new FileWriter(archivo, true);
+            String generos = String.join(",", autor.getGeneros());
+            writer.write(autor.getNombre() + "|" + autor.getNacionalidad() + "|" + generos + "\n");
+            writer.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al guardar el autor en el archivo: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
     
     /**
      * @param args the command line arguments

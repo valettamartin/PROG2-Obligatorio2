@@ -10,6 +10,9 @@ package interfaz;
  */
 
 import gestiondelibrerias.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -146,6 +149,16 @@ public class RegistrarGenero extends javax.swing.JFrame {
     }//GEN-LAST:event_txtRegistroNombreActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if (this.txtRegistroNombre.getText().contains("|") || this.txtRegistroDescripcion.getText().contains("|")) {
+            JOptionPane.showMessageDialog(
+                this,
+                "No se puede utilizar el carácter '|'.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return; // Salimos del método para evitar el registro
+        }
+        
         if (this.txtRegistroNombre.getText().length() > 0 && this.txtRegistroDescripcion.getText().length() > 0) {
             if (this.sistema.generoRepetido(this.txtRegistroNombre.getText())) {
                 // Codigo para cuando el genero esta repetido
@@ -162,6 +175,8 @@ public class RegistrarGenero extends javax.swing.JFrame {
                 
                 Genero nuevoGenero = new Genero(nuevoNom, nuevoDesc);
                 this.sistema.agregarGenero(nuevoGenero);
+                
+                this.guardarGeneroEnArchivo(nuevoGenero);
                 
                 this.actualizarLista();
                 
@@ -198,6 +213,28 @@ public class RegistrarGenero extends javax.swing.JFrame {
         }
         
         lstDatos.setModel(modelo);
+    }
+    
+    private void guardarGeneroEnArchivo(Genero genero) {
+        String rutaArchivo = System.getProperty("user.dir") + File.separator + "datos" + File.separator + "generos.txt";
+        File archivo = new File(rutaArchivo);
+
+        try {
+            // Crear carpeta "datos" si no existe
+            archivo.getParentFile().mkdirs();
+
+            // Abrir el archivo en modo de anexado
+            FileWriter writer = new FileWriter(archivo, true);
+            writer.write(genero.getNombre() + "|" + genero.getDescripcion() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al guardar el género en el archivo: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
     }
     
     /**
